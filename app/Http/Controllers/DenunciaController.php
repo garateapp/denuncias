@@ -86,10 +86,10 @@ class DenunciaController extends Controller
 
         // Enviar correo electrónico a los administradores
         $adminRecipients = [
-            'carlos.alvarez@greenex.cl',
-            // 'eduardo.garate@greenex.cl',
-            // 'ivan.romero@greenex.cl',
-            // 'rodrigo.garate@greenex.cl',
+            // 'carlos.alvarez@greenex.cl',
+            'eduardo.garate@greenex.cl',
+            'ivan.romero@greenex.cl',
+            'rodrigo.garate@greenex.cl',
         ];
 
         Mail::to($adminRecipients)->send(new DenunciaReceived($denuncia));
