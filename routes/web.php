@@ -7,14 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [DenunciaController::class, 'welcome'])->name('welcome');
 
 Route::get('/dashboard', [App\Http\Controllers\AdminDenunciaController::class, 'dashboardStats'])->middleware(['auth', 'verified'])->name('dashboard');
 

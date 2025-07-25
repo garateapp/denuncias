@@ -11,17 +11,63 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\DenunciaReceived;
 use App\Mail\DenunciaConfirmation;
 use App\Models\TipoDenuncia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Foundation\Application;
 
 class DenunciaController extends Controller
 {
+    public function welcome()
+    {
+        $tiposDenuncia = TipoDenuncia::all();
+
+        $leyKarinNombres = ['Acoso Sexual', 'Acoso Laboral', 'Violencia en el Trabajo'];
+
+        $leyKarinTipos = $tiposDenuncia->whereIn('nombre', $leyKarinNombres)->values();
+        $otrosTipos = $tiposDenuncia->whereNotIn('nombre', $leyKarinNombres)->values();
+
+        return Inertia::render('Welcome', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => app()->version(),
+            'phpVersion' => PHP_VERSION,
+            'leyKarinTipos' => $leyKarinTipos->map(function ($tipo) {
+                return ['id' => $tipo->id, 'nombre' => $tipo->nombre];
+            })->toArray(),
+            'otrosTipos' => $otrosTipos->map(function ($tipo) {
+                return ['id' => $tipo->id, 'nombre' => $tipo->nombre];
+            })->toArray(),
+            'leyKarinTypeIds' => $leyKarinTipos->pluck('id')->toArray(),
+        ]);
+    }
+
     /**
      * Display the complaint form.
      */
-    public function create()
+    public function create(Request $request)
     {
         $tiposDenuncia = TipoDenuncia::all();
+        $initialTiposDenuncia = [];
+        $initialEsAnonima = true;
+        $leyKarinTypeIds = [1, 2, 3];
+        $delitosYEticaTypeIds = [4, 5, 6];
+
+        if ($request->has('category')) {
+            $category = $request->input('category');
+            if ($category === 'leyKarin') {
+                $initialTiposDenuncia = $leyKarinTypeIds;
+                $initialEsAnonima = false;
+            } elseif ($category === 'delitosYEtica') {
+                $initialTiposDenuncia = $delitosYEticaTypeIds;
+                $initialEsAnonima = true;
+            }
+        }
+
         return Inertia::render('Denuncias/Create', [
             'tiposDenuncia' => $tiposDenuncia,
+            'initialTiposDenuncia' => $initialTiposDenuncia,
+            'initialEsAnonima' => $initialEsAnonima,
+            'leyKarinTypeIds' => $leyKarinTypeIds,
+            'delitosYEticaTypeIds' => $delitosYEticaTypeIds,
         ]);
     }
 
@@ -30,7 +76,10 @@ class DenunciaController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $leyKarinNombres = ['Acoso Sexual', 'Acoso Laboral', 'Violencia en el Trabajo'];
+        $leyKarinTypeIds = TipoDenuncia::whereIn('nombre', $leyKarinNombres)->pluck('id')->toArray();
+
+        $rules = [
             'descripcion' => 'required|string',
             'implicados' => 'nullable|string',
             'medidas_proteccion_solicitadas' => 'boolean',
@@ -53,7 +102,25 @@ class DenunciaController extends Controller
             'evidencias.*' => 'nullable|file|max:10240', // Max 10MB per file
             'tipos_denuncia' => 'required|array',
             'tipos_denuncia.*' => 'exists:tipos_denuncia,id',
-        ]);
+        ];
+
+        $selectedTipos = $request->input('tipos_denuncia', []);
+        $isLeyKarinSelected = count(array_intersect($selectedTipos, $leyKarinTypeIds)) > 0;
+
+        if ($isLeyKarinSelected) {
+            $rules['es_anonima'] = ['boolean', 'declined']; // Must be false (not anonymous)
+        }
+
+        if (!$request->input('es_anonima')) {
+            $rules['nombre_denunciante'] = 'required|string|max:255';
+            $rules['apellidos_denunciante'] = 'required|string|max:255';
+            $rules['genero_denunciante'] = 'required|string|in:Masculino,Femenino,Otro,Prefiero no especificar';
+            $rules['email_personal_denunciante'] = 'required|email|max:255';
+            $rules['rut_denunciante'] = 'required|string|max:255';
+            $rules['telefono_denunciante'] = 'required|string|max:255';
+        }
+
+        $validatedData = $request->validate($rules);
 
         $codigoSeguimiento = Str::random(10); // Generate a unique tracking code
 
@@ -86,10 +153,10 @@ class DenunciaController extends Controller
 
         // Enviar correo electrónico a los administradores
         $adminRecipients = [
-            // 'carlos.alvarez@greenex.cl',
-            'eduardo.garate@greenex.cl',
-            'ivan.romero@greenex.cl',
-            'rodrigo.garate@greenex.cl',
+            'carlos.alvarez@greenex.cl',
+            //'eduardo.garate@greenex.cl',
+            //'ivan.romero@greenex.cl',
+            //'rodrigo.garate@greenex.cl',
         ];
 
         Mail::to($adminRecipients)->send(new DenunciaReceived($denuncia));
