@@ -74,7 +74,10 @@ export default function Welcome({ auth }) {
                                         En Greenex, la integridad, la ética y el respeto son pilares fundamentales de nuestra cultura corporativa. Estamos firmemente comprometidos con la creación y el mantenimiento de un ambiente de trabajo seguro, justo y libre de cualquier forma de acoso, discriminación o conducta indebida. Este Canal de Denuncias es una manifestación tangible de ese compromiso.
                                     </p>
                                     <p className="mb-4">
-                                        Diseñado bajo los más altos estándares de seguridad y confidencialidad, nuestro canal permite a empleados, colaboradores, proveedores y terceros reportar de manera segura y, si lo desean, anónima, cualquier situación que consideren contraria a nuestros valores, políticas internas o la legislación vigente. Esto incluye, pero no se limita a, casos de acoso laboral, acoso sexual, violencia en el trabajo, o cualquier otra conducta que pueda constituir un delito según la Ley N°20.393 sobre Responsabilidad Penal de las Personas Jurídicas.
+                                        Diseñado bajo los más altos estándares de seguridad y confidencialidad, nuestro canal permite a empleados, colaboradores, proveedores
+                                        y terceros reportar de manera segura y, si lo desean, anónima, cualquier situación que consideren contraria a nuestros valores,
+                                        políticas internas o la legislación vigente además de cualquier otra conducta que pueda constituir un delito según la Ley N°20.393 sobre
+                                        Responsabilidad Penal de las Personas Jurídicas.
                                     </p>
                                     <p className="mb-4">
                                         La implementación de este canal no solo cumple con las exigencias de la normativa chilena, como la reciente Ley Karin (Ley 21.643), sino que refuerza nuestra proactividad en la detección y prevención de riesgos. Creemos que un entorno donde la voz de cada individuo es valorada y protegida es esencial para el bienestar de nuestros trabajadores y para el éxito sostenible de nuestra organización.
@@ -87,6 +90,14 @@ export default function Welcome({ auth }) {
                                     </p>
                                 </div>
                             </div>
+                            <p className="py-4 text-center text-sm text-gray-600">
+                                <PrimaryButton
+                                onClick={() => window.location.href = route('denuncias.create')}
+                                className="ml-4"
+                            >
+                                Realizar Denuncia
+                            </PrimaryButton>
+                            </p>
                         </div>
                     </div>
                 </main>
