@@ -158,12 +158,22 @@ class DenunciaController extends Controller
         }
 
         // Enviar correo electrónico a los administradores
+        if(env('APP_ENV') === 'local') {
+
+
         $adminRecipients = [
+
             'carlos.alvarez@greenex.cl',
-            // 'eduardo.garate@greenex.cl',
-            // 'ivan.romero@greenex.cl',
-            // 'rodrigo.garate@greenex.cl',
         ];
+        } else {
+          $adminRecipients = [
+
+
+            'eduardo.garate@greenex.cl',
+            'ivan.romero@greenex.cl',
+            'rodrigo.garate@greenex.cl',
+        ];
+        }
 
         Mail::to($adminRecipients)->send(new DenunciaReceived($denuncia));
 
