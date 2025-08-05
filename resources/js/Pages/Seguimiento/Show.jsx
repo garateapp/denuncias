@@ -65,7 +65,7 @@ export default function Show({ denuncia }) {
                             <PrimaryButton disabled={processing}>Añadir Información</PrimaryButton>
                         </form>
 
-                        <div className="mt-8">
+                        {/* <div className="mt-8">
                             <h3 className="text-xl font-bold">Historial de la Denuncia</h3>
                             <div className="space-y-4 mt-4">
                                 {denuncia.actualizaciones.map((actualizacion) => (
@@ -75,7 +75,7 @@ export default function Show({ denuncia }) {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
