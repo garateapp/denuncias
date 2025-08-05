@@ -11,7 +11,7 @@ import Modal from '@/Components/Modal';
 import DangerButton from '@/Components/DangerButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 
-export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
+export default function Show({ auth, denuncia, investigators, isLeyKarin, tiposDenuncia }) {
     const [activeTab, setActiveTab] = useState(auth.user.roles.includes('Gerencia') ? 'historial' : 'actualizacion');
     const [infoTab, setInfoTab] = useState('denunciante');
     const fileInput = useRef();
@@ -30,6 +30,7 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
         fecha_aplicacion_medidas: denuncia.fecha_aplicacion_medidas?.split(' ')[0] || '',
         fecha_derivacion_dt: denuncia.fecha_derivacion_dt?.split(' ')[0] || '',
         fecha_notificacion_diat: denuncia.fecha_notificacion_diat?.split(' ')[0] || '',
+        tipos_denuncia: denuncia.tipos ? denuncia.tipos.map(tipo => tipo.id) : [], // Initialize with current types
     });
 
     const addUpdate = (e) => {
@@ -70,8 +71,29 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
         });
     };
 
+    const updateTipos = (e) => {
+        e.preventDefault();
+        post(route('admin.denuncias.updateTipos', denuncia.id), {
+            preserveScroll: true,
+        });
+    };
+
     const handleFileChange = (e) => {
         setData('evidencias', Array.from(e.target.files));
+    };
+
+    const handleTipoDenunciaChange = (e, tipoId) => {
+        const isChecked = e.target.checked;
+        let newTipos = [...data.tipos_denuncia];
+
+        if (isChecked) {
+            if (!newTipos.includes(tipoId)) {
+                newTipos.push(tipoId);
+            }
+        } else {
+            newTipos = newTipos.filter(id => id !== tipoId);
+        }
+        setData('tipos_denuncia', newTipos);
     };
 
     const getStatusClass = (status) => {
@@ -92,6 +114,9 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
             default: return 'bg-gray-200 text-gray-800';
         }
     };
+
+    const evidenciasDenunciante = denuncia.evidencias.filter(e => e.subido_por === 'denunciante');
+    const evidenciasInvestigador = denuncia.evidencias.filter(e => e.subido_por === 'investigador');
 
     return (
         <AuthenticatedLayout
@@ -166,6 +191,7 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
                                         <TabButton onClick={() => setInfoTab('denunciante')} active={infoTab === 'denunciante'}>Denunciante</TabButton>
                                         <TabButton onClick={() => setInfoTab('denunciado')} active={infoTab === 'denunciado'}>Denunciado</TabButton>
                                         <TabButton onClick={() => setInfoTab('evidencias')} active={infoTab === 'evidencias'}>Evidencias</TabButton>
+                                        <TabButton onClick={() => setInfoTab('documentos')} active={infoTab === 'documentos'}>Documentos</TabButton>
                                     </nav>
                                 </div>
 
@@ -201,9 +227,9 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
 
                                 {infoTab === 'evidencias' && (
                                     <div>
-                                        {denuncia.evidencias && denuncia.evidencias.length > 0 ? (
+                                        {evidenciasDenunciante.length > 0 ? (
                                             <ul className="list-disc pl-5 space-y-2">
-                                                {denuncia.evidencias.map((evidencia) => (
+                                                {evidenciasDenunciante.map((evidencia) => (
                                                     <li key={evidencia.id}>
                                                         <a href={`/storage/${evidencia.ruta_archivo}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
                                                             {evidencia.nombre_archivo}
@@ -213,7 +239,26 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
                                                 ))}
                                             </ul>
                                         ) : (
-                                            <p className="text-gray-600 italic">No se adjuntaron evidencias.</p>
+                                            <p className="text-gray-600 italic">No se adjuntaron evidencias por parte del denunciante.</p>
+                                        )}
+                                    </div>
+                                )}
+
+                                {infoTab === 'documentos' && (
+                                    <div>
+                                        {evidenciasInvestigador.length > 0 ? (
+                                            <ul className="list-disc pl-5 space-y-2">
+                                                {evidenciasInvestigador.map((evidencia) => (
+                                                    <li key={evidencia.id}>
+                                                        <a href={`/storage/${evidencia.ruta_archivo}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                                                            {evidencia.nombre_archivo}
+                                                        </a>
+                                                        <span className="text-gray-500 text-xs ml-2">({(evidencia.tamano / 1024).toFixed(2)} KB)</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <p className="text-gray-600 italic">No se adjuntaron documentos por parte del investigador.</p>
                                         )}
                                     </div>
                                 )}
@@ -304,6 +349,30 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
                                                 <InputError message={errors.evidencias} className="mt-2" />
                                             </div>
                                             <PrimaryButton disabled={processing}>Añadir Actualización</PrimaryButton>
+                                            
+                                            <div className="mt-6">
+                                                <h4 className="text-lg font-bold text-gray-900 mb-2">Tipificación de la Denuncia</h4>
+                                                <InputLabel value="Tipos de Denuncia" />
+                                                <div className="mt-1 grid grid-cols-1 gap-2">
+                                                    {tiposDenuncia.map((tipo) => (
+                                                        <div key={tipo.id} className="flex items-center">
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`tipo-${tipo.id}`}
+                                                                value={tipo.id}
+                                                                checked={data.tipos_denuncia.includes(tipo.id)}
+                                                                onChange={(e) => handleTipoDenunciaChange(e, tipo.id)}
+                                                                className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                                            />
+                                                            <label htmlFor={`tipo-${tipo.id}`} className="ml-2 text-sm text-gray-600">
+                                                                {tipo.nombre}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <InputError message={errors.tipos_denuncia} className="mt-2" />
+                                            </div>
+                                            <PrimaryButton onClick={updateTipos} disabled={processing}>Actualizar Tipificación</PrimaryButton>
                                         </form>
                                     )}
 
@@ -360,13 +429,55 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin }) {
                                                     <div key={actualizacion.id} className="p-3 border rounded-lg bg-gray-50 text-sm">
                                                         <p className="font-semibold">De <span className="font-bold">{actualizacion.estado_anterior}</span> a <span className="font-bold">{actualizacion.estado_nuevo}</span></p>
                                                         <p className="text-gray-700 my-1">{actualizacion.comentario}</p>
-                                                        <p className="text-xs text-gray-500">Por: {actualizacion.user ? actualizacion.user.name : 'N/A'} - {new Date(actualizacion.created_at).toLocaleString()}</p>
+                                                        {actualizacion.evidencias && actualizacion.evidencias.length > 0 && (
+                                                            <div className="mt-2">
+                                                                <p className="font-semibold text-xs">Archivos adjuntos:</p>
+                                                                <ul className="list-disc pl-5">
+                                                                    {actualizacion.evidencias.map(e => (
+                                                                        <li key={e.id} className="text-xs">
+                                                                            <a href={`/storage/${e.ruta_archivo}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                                                                                {e.nombre_archivo}
+                                                                            </a>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                        <p className="text-xs text-gray-500 mt-2">Por: {actualizacion.user ? actualizacion.user.name : 'N/A'} - {new Date(actualizacion.created_at).toLocaleString()}</p>
                                                     </div>
                                                 ))
                                             ) : (
                                                 <p className="text-gray-600 italic">No hay actualizaciones.</p>
                                             )}
                                         </div>
+                                    )}
+
+                                    {/* Pestaña: Tipificación */}
+                                    {activeTab === 'tipificacion' && !auth.user.roles.includes('Gerencia') && (
+                                        <form onSubmit={updateTipos} className="space-y-4">
+                                            <div>
+                                                <InputLabel value="Tipos de Denuncia" />
+                                                <div className="mt-1 grid grid-cols-1 gap-2">
+                                                    {tiposDenuncia.map((tipo) => (
+                                                        <div key={tipo.id} className="flex items-center">
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`tipo-${tipo.id}`}
+                                                                value={tipo.id}
+                                                                checked={data.tipos_denuncia.includes(tipo.id)}
+                                                                onChange={(e) => handleTipoDenunciaChange(e, tipo.id)}
+                                                                className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                                            />
+                                                            <label htmlFor={`tipo-${tipo.id}`} className="ml-2 text-sm text-gray-600">
+                                                                {tipo.nombre}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <InputError message={errors.tipos_denuncia} className="mt-2" />
+                                            </div>
+                                            <PrimaryButton disabled={processing}>Actualizar Tipificación</PrimaryButton>
+                                        </form>
                                     )}
                                 </div>
                             </div>

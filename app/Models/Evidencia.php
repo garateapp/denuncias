@@ -13,6 +13,8 @@ class Evidencia extends Model
         'ruta_archivo',
         'tipo_mime',
         'tamano',
+        'subido_por',
+        'actualizacion_denuncia_id',
     ];
 
     /**
@@ -21,5 +23,13 @@ class Evidencia extends Model
     public function denuncia(): BelongsTo
     {
         return $this->belongsTo(Denuncia::class);
+    }
+
+    /**
+     * Get the update that owns the evidence.
+     */
+    public function actualizacionDenuncia(): BelongsTo
+    {
+        return $this->belongsTo(ActualizacionDenuncia::class);
     }
 }

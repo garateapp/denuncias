@@ -10,7 +10,11 @@
     <p><em>{{ $messageContent }}</em></p>
 </div>
 
-<p>Por favor, responda a este correo electrónico con la información solicitada. Agradecemos su colaboración para resolver este caso.</p>
+<p>Para añadir la información solicitada y/o adjuntar nuevos archivos, por favor ingrese al siguiente enlace:</p>
+
+<p><a href="{{ route('seguimiento.show', $denuncia->codigo_seguimiento) }}" style="display: inline-block; background-color: #4f46e5; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Añadir Información</a></p>
+
+<p>Agradecemos su colaboración para resolver este caso.</p>
 
 <p>Atentamente,</p>
 <p>El equipo de Greenex</p>

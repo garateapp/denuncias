@@ -45,7 +45,6 @@ class DenunciaController extends Controller
      */
     public function create(Request $request)
     {
-        $tiposDenuncia = TipoDenuncia::all();
         $initialTiposDenuncia = [];
         $initialEsAnonima = true;
         $leyKarinTypeIds = [1, 2, 3];
@@ -63,7 +62,6 @@ class DenunciaController extends Controller
         }
 
         return Inertia::render('Denuncias/Create', [
-            'tiposDenuncia' => $tiposDenuncia,
             'initialTiposDenuncia' => $initialTiposDenuncia,
             'initialEsAnonima' => $initialEsAnonima,
             'leyKarinTypeIds' => $leyKarinTypeIds,
@@ -103,8 +101,6 @@ class DenunciaController extends Controller
             'cargo_denunciado' => 'nullable|string|max:255',
 
             'evidencias.*' => 'nullable|file|max:10240', // Max 10MB per file
-            'tipos_denuncia' => 'required|array',
-            'tipos_denuncia.*' => 'exists:tipos_denuncia,id',
         ];
 
         $selectedTipos = $request->input('tipos_denuncia', []);
@@ -142,7 +138,9 @@ class DenunciaController extends Controller
             'telefono_denunciante' => $request->es_anonima ? null : $request->telefono_denunciante,
         ]));
 
-        $denuncia->tipos()->attach($request->input('tipos_denuncia'));
+        if ($request->has('tipos_denuncia')) {
+            $denuncia->tipos()->attach($request->input('tipos_denuncia'));
+        }
 
         if ($request->hasFile('evidencias')) {
             foreach ($request->file('evidencias') as $file) {
@@ -154,6 +152,7 @@ class DenunciaController extends Controller
                     'ruta_archivo' => $path,
                     'tipo_mime' => $file->getMimeType(),
                     'tamano' => $file->getSize(),
+                    'subido_por' => 'denunciante',
                 ]);
             }
         }

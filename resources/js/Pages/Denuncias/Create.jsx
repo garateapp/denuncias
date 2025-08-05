@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsAnonima, leyKarinTypeIds = [], delitosYEticaTypeIds = [] }) {
+export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKarinTypeIds = [], delitosYEticaTypeIds = [] }) {
 
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -29,43 +29,29 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
         email_opcional_confirmacion: '',
     });
 
-    const [selectedCategory, setSelectedCategory] = useState(() => {
-        if (initialTiposDenuncia.some(id => leyKarinTypeIds.includes(id))) {
-            return 'leyKarin';
-        } else if (initialTiposDenuncia.some(id => delitosYEticaTypeIds.includes(id))) {
-            return 'delitosYEtica';
-        } else {
-            return null;
-        }
-    });
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const isLeyKarinSelected = data.tipos_denuncia.some(id => leyKarinTypeIds.includes(id));
+    const isLeyKarinSelected = selectedCategory === 'leyKarin';
 
     useEffect(() => {
-        if (initialTiposDenuncia.some(id => leyKarinTypeIds.includes(id))) {
+        const isKarin = initialTiposDenuncia.some(id => leyKarinTypeIds.includes(id));
+        const isDelitos = initialTiposDenuncia.some(id => delitosYEticaTypeIds.includes(id));
+
+        if (isKarin) {
             setSelectedCategory('leyKarin');
-        } else if (initialTiposDenuncia.some(id => delitosYEticaTypeIds.includes(id))) {
+            setData('es_anonima', false); // Forzar a no anónima para Ley Karin
+        } else if (isDelitos) {
             setSelectedCategory('delitosYEtica');
+            setData('es_anonima', initialEsAnonima);
         } else {
             setSelectedCategory(null);
+            setData('es_anonima', initialEsAnonima);
         }
-    }, [initialTiposDenuncia, leyKarinTypeIds, delitosYEticaTypeIds]);
-
-    const filteredTiposDenuncia = tiposDenuncia.filter(tipo => {
-        if (selectedCategory === 'leyKarin') {
-            return leyKarinTypeIds.includes(tipo.id);
-        } else if (selectedCategory === 'delitosYEtica') {
-            return delitosYEticaTypeIds.includes(tipo.id);
-        } else {
-            return true; // Show all if no category is pre-selected
-        }
-    });
-
+    }, [initialTiposDenuncia, leyKarinTypeIds, delitosYEticaTypeIds, initialEsAnonima]);
 
 
     const submit = (e) => {
         e.preventDefault();
-        console.log('Submitting tipos_denuncia:', data.tipos_denuncia);
         post(route('denuncias.store'), {
             onSuccess: () => reset(),
         });
@@ -75,26 +61,6 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
         setData('evidencias', Array.from(e.target.files));
     };
 
-    const handleTipoDenunciaChange = (e, tipoId) => {
-        const isChecked = e.target.checked;
-        let newTipos = [...data.tipos_denuncia];
-
-        if (isChecked) {
-            if (!newTipos.includes(tipoId)) {
-                newTipos.push(tipoId);
-            }
-        } else {
-            newTipos = newTipos.filter(id => id !== tipoId);
-        }
-
-        const isNowLeyKarin = newTipos.some(id => leyKarinTypeIds.includes(id));
-
-        setData(prevData => ({
-            ...prevData,
-            tipos_denuncia: newTipos,
-            es_anonima: isNowLeyKarin ? false : (selectedCategory === 'delitosYEtica' ? true : prevData.es_anonima),
-        }));
-    };
     const getPageTitle = () => {
         if (selectedCategory === 'leyKarin') {
             return "Denuncia Ley Karin";
@@ -106,33 +72,6 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
 
     const pageTitle = getPageTitle();
 
-    const isCheckboxDisabled = (tipoId) => {
-        const isLeyKarinType = leyKarinTypeIds.includes(tipoId);
-        const isDelitosYEticaType = delitosYEticaTypeIds.includes(tipoId);
-
-        // If a category is selected, disable checkboxes that don't belong to that category
-        if (selectedCategory === 'leyKarin' && !isLeyKarinType) {
-            return true;
-        }
-        if (selectedCategory === 'delitosYEtica' && !isDelitosYEticaType) {
-            return true;
-        }
-
-        // If no category is selected, and this checkbox is not currently selected,
-        // disable it if selecting it would conflict with an already selected type
-        // from a different category.
-        if (selectedCategory === null && !data.tipos_denuncia.includes(tipoId)) {
-            if (isLeyKarinType && data.tipos_denuncia.some(id => delitosYEticaTypeIds.includes(id))) {
-                return true;
-            }
-            if (isDelitosYEticaType && data.tipos_denuncia.some(id => leyKarinTypeIds.includes(id))) {
-                return true;
-            }
-        }
-
-        return false;
-    };
-
     return (
         <GuestLayout>
             <Head title={pageTitle} />
@@ -141,31 +80,17 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <InputLabel value="Tipo de Denuncia" />
                     {selectedCategory && (
-                        <p className="text-sm text-gray-500 mt-2">
-                            Usted está realizando una denuncia bajo la categoría de: {selectedCategory === 'leyKarin' ? 'Ley Karin' : 'Delitos y Faltas a la Ética'}
-                        </p>
+                        <div className="p-4 bg-gray-100 border-l-4 border-gray-400 text-gray-800">
+                            <p className="font-bold">Categoría de la denuncia</p>
+                            <p className="text-sm">
+                                Usted está realizando una denuncia bajo la categoría de: {selectedCategory === 'leyKarin' ? 'Ley Karin' : 'Delitos y Faltas a la Ética'}.
+                            </p>
+                             <p className="text-sm mt-2">
+                                El equipo de cumplimiento revisará y clasificará su denuncia.
+                            </p>
+                        </div>
                     )}
-                    <div className="mt-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredTiposDenuncia.map((tipo) => (
-                            <div key={tipo.id} className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    id={`tipo-${tipo.id}`}
-                                    value={tipo.id}
-                                    checked={data.tipos_denuncia.includes(tipo.id)}
-                                    onChange={(e) => handleTipoDenunciaChange(e, tipo.id)}
-                                    disabled={isCheckboxDisabled(tipo.id)}
-                                    className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                                />
-                                <label htmlFor={`tipo-${tipo.id}`} className="ml-2 text-sm text-gray-600">
-                                    {tipo.nombre}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                    <InputError message={errors.tipos_denuncia} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
@@ -193,18 +118,25 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
                     <InputLabel htmlFor="medidas_proteccion_solicitadas" className="ml-2">Solicitar medidas de protección</InputLabel>
                 </div>
 
-                <div className="mt-4 flex items-center">
-                    <input
-                        type="checkbox"
-                        id="es_anonima"
-                        name="es_anonima"
-                        checked={data.es_anonima}
-                        onChange={(e) => setData('es_anonima', e.target.checked)}
-                        disabled={isLeyKarinSelected}
-                        className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                    />
-                    <InputLabel htmlFor="es_anonima" className="ml-2">Realizar denuncia de forma anónima</InputLabel>
-                </div>
+                {isLeyKarinSelected ? (
+                    <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800">
+                        <p className="font-bold">Denuncia No Anónima</p>
+                        <p className="text-sm">Para cumplir con la Ley Karin, el denunciante debe identificarse. Su denuncia no será anónima.</p>
+                    </div>
+                ) : (
+                    <div className="mt-4 flex items-center">
+                        <input
+                            type="checkbox"
+                            id="es_anonima"
+                            name="es_anonima"
+                            checked={data.es_anonima}
+                            onChange={(e) => setData('es_anonima', e.target.checked)}
+                            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                        />
+                        <InputLabel htmlFor="es_anonima" className="ml-2">Realizar denuncia de forma anónima</InputLabel>
+                    </div>
+                )}
+
 
                 {!data.es_anonima && (
                     <>
@@ -400,5 +332,3 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
         </GuestLayout>
     );
 }
-
-

@@ -30,4 +30,12 @@ class ActualizacionDenuncia extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the evidences for the update.
+     */
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class);
+    }
 }

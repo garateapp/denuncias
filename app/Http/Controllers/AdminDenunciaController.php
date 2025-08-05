@@ -49,17 +49,20 @@ class AdminDenunciaController extends Controller
      */
     public function show(Denuncia $denuncia)
     {
-        $denuncia->load('evidencias', 'actualizaciones.user', 'assignedUser', 'tipos');
+        $denuncia->load('evidencias', 'actualizaciones.user', 'actualizaciones.evidencias', 'assignedUser', 'tipos');
         $investigators = User::whereHas('roles', function ($query) {
             $query->where('name', 'Comisionado');
         })->get();
 
         $isLeyKarin = $denuncia->isLeyKarin();
 
+        $tiposDenuncia = TipoDenuncia::all();
+
         return Inertia::render('Admin/Denuncias/Show', [
             'denuncia' => $denuncia,
             'investigators' => $investigators,
             'isLeyKarin' => $isLeyKarin,
+            'tiposDenuncia' => $tiposDenuncia,
         ]);
     }
 
@@ -145,7 +148,7 @@ class AdminDenunciaController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $denuncia) {
-            ActualizacionDenuncia::create([
+            $actualizacion = ActualizacionDenuncia::create([
                 'denuncia_id' => $denuncia->id,
                 'comentario' => $request->comentario,
                 'estado_anterior' => $denuncia->estado,
@@ -167,12 +170,29 @@ class AdminDenunciaController extends Controller
                         'ruta_archivo' => $path,
                         'tipo_mime' => $file->getMimeType(),
                         'tamano' => $file->getSize(),
+                        'subido_por' => 'investigador',
+                        'actualizacion_denuncia_id' => $actualizacion->id,
                     ]);
                 }
             }
         });
 
         return redirect()->back()->with('success', 'Actualización añadida correctamente.');
+    }
+
+    /**
+     * Update the types of the specified complaint.
+     */
+    public function updateTipos(Request $request, Denuncia $denuncia)
+    {
+        $request->validate([
+            'tipos_denuncia' => 'array',
+            'tipos_denuncia.*' => 'exists:tipos_denuncia,id',
+        ]);
+
+        $denuncia->tipos()->sync($request->input('tipos_denuncia', []));
+
+        return redirect()->back()->with('success', 'Tipos de denuncia actualizados correctamente.');
     }
 
     /**

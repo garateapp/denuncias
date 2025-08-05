@@ -22,6 +22,7 @@ Route::get('/denunciar', [DenunciaController::class, 'create'])->name('denuncias
 Route::post('/denuncias', [DenunciaController::class, 'store'])->name('denuncias.store');
 Route::get('/seguimiento', [SeguimientoController::class, 'index'])->name('seguimiento.index');
 Route::get('/denuncias/{codigo}', [SeguimientoController::class, 'show'])->name('seguimiento.show');
+Route::post('/seguimiento/{codigo}', [SeguimientoController::class, 'addPublicUpdate'])->name('seguimiento.addPublicUpdate');
 
 require __DIR__.'/auth.php';
 
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'verified', 'role:admin|super-admin|Comisionado|Geren
     Route::post('/admin/denuncias/{denuncia}/deadlines', [App\Http\Controllers\AdminDenunciaController::class, 'updateDeadlines'])->name('admin.denuncias.updateDeadlines');
 
     Route::post('/admin/denuncias/{denuncia}/request-info', [App\Http\Controllers\AdminDenunciaController::class, 'requestMoreInfo'])->name('admin.denuncias.requestMoreInfo');
+    Route::post('/admin/denuncias/{denuncia}/tipos', [App\Http\Controllers\AdminDenunciaController::class, 'updateTipos'])->name('admin.denuncias.updateTipos');
 
     // Rutas para la gestión de roles y permisos
     Route::get('/admin/roles', [App\Http\Controllers\Admin\RolePermissionController::class, 'index'])->name('admin.roles.index');
