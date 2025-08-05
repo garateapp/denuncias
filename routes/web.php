@@ -26,11 +26,15 @@ Route::get('/denuncias/{codigo}', [SeguimientoController::class, 'show'])->name(
 require __DIR__.'/auth.php';
 
 // Rutas para el panel de administración de denuncias
-Route::middleware(['auth', 'verified', 'role:admin|super-admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|super-admin|Comisionado|Gerencia'])->group(function () {
     Route::get('/admin/denuncias', [App\Http\Controllers\AdminDenunciaController::class, 'index'])->name('admin.denuncias.index');
     Route::get('/admin/denuncias/{denuncia}', [App\Http\Controllers\AdminDenunciaController::class, 'show'])->name('admin.denuncias.show');
     Route::patch('/admin/denuncias/{denuncia}', [App\Http\Controllers\AdminDenunciaController::class, 'update'])->name('admin.denuncias.update');
     Route::post('/admin/denuncias/{denuncia}/actualizar', [App\Http\Controllers\AdminDenunciaController::class, 'addUpdate'])->name('admin.denuncias.addUpdate');
+    Route::post('/admin/denuncias/{denuncia}/assign', [App\Http\Controllers\AdminDenunciaController::class, 'assign'])->name('admin.denuncias.assign');
+    Route::post('/admin/denuncias/{denuncia}/deadlines', [App\Http\Controllers\AdminDenunciaController::class, 'updateDeadlines'])->name('admin.denuncias.updateDeadlines');
+
+    Route::post('/admin/denuncias/{denuncia}/request-info', [App\Http\Controllers\AdminDenunciaController::class, 'requestMoreInfo'])->name('admin.denuncias.requestMoreInfo');
 
     // Rutas para la gestión de roles y permisos
     Route::get('/admin/roles', [App\Http\Controllers\Admin\RolePermissionController::class, 'index'])->name('admin.roles.index');
@@ -50,6 +54,7 @@ Route::middleware(['auth', 'verified', 'role:admin|super-admin'])->group(functio
 
     // Rutas para la gestión de Usuarios
     Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+    Route::post('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
     Route::put('/admin/users/{user}/roles', [App\Http\Controllers\Admin\UserController::class, 'updateRole'])->name('admin.users.updateRole');
 });
 

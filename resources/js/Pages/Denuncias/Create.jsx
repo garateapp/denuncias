@@ -7,7 +7,7 @@ import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsAnonima, leyKarinTypeIds = [], delitosYEticaTypeIds = [] }) {
-    
+
 
     const { data, setData, post, processing, errors, reset } = useForm({
         descripcion: '',
@@ -26,6 +26,7 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
         cargo_denunciado: '',
         evidencias: [],
         tipos_denuncia: initialTiposDenuncia,
+        email_opcional_confirmacion: '',
     });
 
     const [selectedCategory, setSelectedCategory] = useState(() => {
@@ -60,10 +61,11 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
         }
     });
 
-    
+
 
     const submit = (e) => {
         e.preventDefault();
+        console.log('Submitting tipos_denuncia:', data.tipos_denuncia);
         post(route('denuncias.store'), {
             onSuccess: () => reset(),
         });
@@ -75,53 +77,34 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
 
     const handleTipoDenunciaChange = (e, tipoId) => {
         const isChecked = e.target.checked;
-        const isLeyKarinType = leyKarinTypeIds.includes(tipoId);
-        const isDelitosYEticaType = delitosYEticaTypeIds.includes(tipoId);
-
-        let newTipos = [];
-        let newEsAnonima = data.es_anonima; // Default to current anonymity
-        let newSelectedCategory = selectedCategory; // Default to current category
+        let newTipos = [...data.tipos_denuncia];
 
         if (isChecked) {
-            if (isLeyKarinType) {
-                newTipos = [tipoId];
-                newEsAnonima = false;
-                newSelectedCategory = 'leyKarin';
-            } else if (isDelitosYEticaType) {
-                newTipos = [tipoId];
-                newEsAnonima = true;
-                newSelectedCategory = 'delitosYEtica';
-            } else {
-                // This case should ideally not happen if categories are mutually exclusive
-                // and initial selection forces a category.
-                // If it does, we add the type and maintain current category/anonymity.
-                newTipos = [...data.tipos_denuncia, tipoId];
+            if (!newTipos.includes(tipoId)) {
+                newTipos.push(tipoId);
             }
         } else {
-            newTipos = data.tipos_denuncia.filter(id => id !== tipoId);
-
-            const remainingLeyKarin = newTipos.filter(id => leyKarinTypeIds.includes(id));
-            const remainingDelitosYEtica = newTipos.filter(id => delitosYEticaTypeIds.includes(id));
-
-            if (remainingLeyKarin.length > 0) {
-                newSelectedCategory = 'leyKarin';
-                newEsAnonima = false;
-            } else if (remainingDelitosYEtica.length > 0) {
-                newSelectedCategory = 'delitosYEtica';
-                newEsAnonima = true;
-            } else {
-                newSelectedCategory = null;
-                newEsAnonima = true;
-            }
+            newTipos = newTipos.filter(id => id !== tipoId);
         }
+
+        const isNowLeyKarin = newTipos.some(id => leyKarinTypeIds.includes(id));
 
         setData(prevData => ({
             ...prevData,
             tipos_denuncia: newTipos,
-            es_anonima: newEsAnonima,
+            es_anonima: isNowLeyKarin ? false : (selectedCategory === 'delitosYEtica' ? true : prevData.es_anonima),
         }));
-        setSelectedCategory(newSelectedCategory);
     };
+    const getPageTitle = () => {
+        if (selectedCategory === 'leyKarin') {
+            return "Denuncia Ley Karin";
+        } else if (selectedCategory === 'delitosYEtica') {
+            return "Denuncia de Delitos y Faltas a la Ética";
+        }
+        return "Realizar Denuncia";
+    };
+
+    const pageTitle = getPageTitle();
 
     const isCheckboxDisabled = (tipoId) => {
         const isLeyKarinType = leyKarinTypeIds.includes(tipoId);
@@ -152,13 +135,18 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
 
     return (
         <GuestLayout>
-            <Head title="Realizar Denuncia" />
+            <Head title={pageTitle} />
 
-            <h2 className="text-xl font-semibold text-gray-800 leading-tight mb-4">Realizar Denuncia</h2>
+            <h2 className="text-xl font-semibold text-gray-800 leading-tight mb-4">{pageTitle}</h2>
 
             <form onSubmit={submit}>
                 <div className="mt-4">
                     <InputLabel value="Tipo de Denuncia" />
+                    {selectedCategory && (
+                        <p className="text-sm text-gray-500 mt-2">
+                            Usted está realizando una denuncia bajo la categoría de: {selectedCategory === 'leyKarin' ? 'Ley Karin' : 'Delitos y Faltas a la Ética'}
+                        </p>
+                    )}
                     <div className="mt-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredTiposDenuncia.map((tipo) => (
                             <div key={tipo.id} className="flex items-center">
@@ -311,6 +299,23 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
                     </>
                 )}
 
+                {data.es_anonima && (
+                    <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-800">
+                        <p className="font-bold">¿Desea recibir una copia de la denuncia y el código de seguimiento?</p>
+                        <p className="text-sm mb-2">Si lo desea, puede ingresar un correo electrónico. Este correo NO será guardado en nuestros registros y solo se utilizará para enviarle el código de seguimiento.</p>
+                        <InputLabel htmlFor="email_opcional_confirmacion" value="Email (opcional)" />
+                        <TextInput
+                            id="email_opcional_confirmacion"
+                            type="email"
+                            name="email_opcional_confirmacion"
+                            value={data.email_opcional_confirmacion}
+                            className="mt-1 block w-full"
+                            onChange={(e) => setData('email_opcional_confirmacion', e.target.value)}
+                        />
+                        <InputError message={errors.email_opcional_confirmacion} className="mt-2" />
+                    </div>
+                )}
+
                 <h3 className="text-lg font-medium text-gray-900 mt-6 mb-4">Datos del Denunciado (opcional)</h3>
                 <div className="mt-4">
                     <InputLabel htmlFor="nombre_denunciado" value="Nombre del Denunciado" />
@@ -396,4 +401,4 @@ export default function Create({ tiposDenuncia, initialTiposDenuncia, initialEsA
     );
 }
 
-    
+

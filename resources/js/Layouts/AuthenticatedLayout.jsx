@@ -30,15 +30,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                {user.roles && user.roles.includes('admin') && (
-                                    <NavLink
-                                        href={route('admin.denuncias.index')}
-                                        active={route().current('admin.denuncias.index')}
-                                    >
-                                        Admin Denuncias
-                                    </NavLink>
-                                )}
-                                {user.roles && user.roles.includes('super-admin') && (
+                                {user.roles && (user.roles.includes('super-admin') || user.roles.includes('Administrador') || user.roles.includes('Comisionado') || user.roles.includes('Gerencia')) && (
                                     <NavLink
                                         href={route('admin.denuncias.index')}
                                         active={route().current('admin.denuncias.index')}

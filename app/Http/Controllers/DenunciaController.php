@@ -93,6 +93,9 @@ class DenunciaController extends Controller
             'rut_denunciante' => 'nullable|string|max:255',
             'telefono_denunciante' => 'nullable|string|max:255',
 
+            // Nuevo campo para email opcional de confirmación
+            'email_opcional_confirmacion' => 'nullable|email|max:255',
+
             // Campos del denunciado
             'nombre_denunciado' => 'nullable|string|max:255',
             'apellidos_denunciado' => 'nullable|string|max:255',
@@ -124,6 +127,10 @@ class DenunciaController extends Controller
 
         $codigoSeguimiento = Str::random(10); // Generate a unique tracking code
 
+        // Extraer el email opcional antes de crear la denuncia para no guardarlo
+        $emailOpcionalConfirmacion = $request->input('email_opcional_confirmacion');
+        unset($validatedData['email_opcional_confirmacion']);
+
         $denuncia = Denuncia::create(array_merge($validatedData, [
             'codigo_seguimiento' => $codigoSeguimiento,
             'estado' => 'Recibida',
@@ -153,16 +160,18 @@ class DenunciaController extends Controller
 
         // Enviar correo electrónico a los administradores
         $adminRecipients = [
-            //'carlos.alvarez@greenex.cl',
-            'eduardo.garate@greenex.cl',
-            'ivan.romero@greenex.cl',
-            'rodrigo.garate@greenex.cl',
+            'carlos.alvarez@greenex.cl',
+            // 'eduardo.garate@greenex.cl',
+            // 'ivan.romero@greenex.cl',
+            // 'rodrigo.garate@greenex.cl',
         ];
 
         Mail::to($adminRecipients)->send(new DenunciaReceived($denuncia));
 
         // Enviar correo de confirmación al denunciante si no es anónimo
-        if (!$denuncia->es_anonima && $denuncia->email_personal_denunciante) {
+        if ($denuncia->es_anonima && $emailOpcionalConfirmacion) {
+            Mail::to($emailOpcionalConfirmacion)->send(new DenunciaConfirmation($denuncia));
+        } elseif (!$denuncia->es_anonima && $denuncia->email_personal_denunciante) {
             Mail::to($denuncia->email_personal_denunciante)->send(new DenunciaConfirmation($denuncia));
         }
 

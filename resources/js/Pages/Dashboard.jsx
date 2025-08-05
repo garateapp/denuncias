@@ -47,14 +47,14 @@ export default function Dashboard({ auth, stats, chartData }) {
                                 </div>
                             </div>
 
-                            <h4 className="text-lg font-medium text-gray-900 mb-4">Totales por Tipo de Denuncia</h4>
+                            {/* <h4 className="text-lg font-medium text-gray-900 mb-4">Totales por Tipo de Denuncia</h4>
                             <ul className="mb-8">
                                 {stats.totalsByType.map((typeStat, index) => (
                                     <li key={index} className="mb-2">
                                         {typeStat.nombre}: {typeStat.total}
                                     </li>
                                 ))}
-                            </ul>
+                            </ul> */}
 
                             <div className="mb-8">
                                 <h4 className="text-lg font-medium text-gray-900 mb-4">Distribución por Tipo de Denuncia</h4>
