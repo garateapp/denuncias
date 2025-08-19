@@ -22,6 +22,7 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin, tiposD
         comentario: '',
         estado_nuevo: denuncia.estado,
         evidencias: [],
+        es_publica: false,
         message: '',
         assigned_user_id: denuncia.assigned_user_id || '',
         urgency_level: denuncia.urgency_level || 'Baja',
@@ -342,6 +343,18 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin, tiposD
                                                     <option value="Resuelta">Resuelta</option>
                                                     <option value="Cerrada">Cerrada</option>
                                                 </SelectInput>
+                                            </div>
+                                            <div>
+                                                <InputLabel htmlFor="es_publica" value="Mostrar en Seguimiento Público" className="flex items-center" />
+                                                <input
+                                                    type="checkbox"
+                                                    id="es_publica"
+                                                    name="es_publica"
+                                                    checked={data.es_publica}
+                                                    onChange={(e) => setData('es_publica', e.target.checked)}
+                                                    className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                                />
+                                                <InputError message={errors.es_publica} className="mt-2" />
                                             </div>
                                             <div>
                                                 <InputLabel htmlFor="evidencias" value="Adjuntar Nuevas Evidencias" />

@@ -25,7 +25,13 @@ class SeguimientoController extends Controller
      */
     public function show(Request $request, $codigo)
     {
-        $denuncia = Denuncia::where('codigo_seguimiento', $codigo)->with('actualizaciones', 'evidencias')->first();
+        $denuncia = Denuncia::where('codigo_seguimiento', $codigo)
+            ->with([
+                'actualizaciones' => function ($query) {
+                    $query->where('es_publica', true);
+                },
+                'evidencias'
+            ])->first();
 
         if (!$denuncia) {
             return redirect()->route('seguimiento.index')->withErrors(['codigo' => 'Código de seguimiento no válido.']);

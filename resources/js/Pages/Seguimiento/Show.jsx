@@ -65,17 +65,35 @@ export default function Show({ denuncia }) {
                             <PrimaryButton disabled={processing}>Añadir Información</PrimaryButton>
                         </form>
 
-                        {/* <div className="mt-8">
+                        <div className="mt-8">
                             <h3 className="text-xl font-bold">Historial de la Denuncia</h3>
                             <div className="space-y-4 mt-4">
-                                {denuncia.actualizaciones.map((actualizacion) => (
-                                    <div key={actualizacion.id} className="p-4 border rounded-lg bg-gray-50">
-                                        <p className="font-semibold">{new Date(actualizacion.created_at).toLocaleString()}</p>
-                                        <p className="text-gray-700 my-1">{actualizacion.comentario}</p>
-                                    </div>
-                                ))}
+                                {denuncia.actualizaciones.length > 0 ? (
+                                    denuncia.actualizaciones.map((actualizacion) => (
+                                        <div key={actualizacion.id} className="p-4 border rounded-lg bg-gray-50">
+                                            <p className="font-semibold">{new Date(actualizacion.created_at).toLocaleString()}</p>
+                                            <p className="text-gray-700 my-1">{actualizacion.comentario}</p>
+                                            {actualizacion.evidencias && actualizacion.evidencias.length > 0 && (
+                                                <div className="mt-2">
+                                                    <p className="font-semibold text-xs">Archivos adjuntos:</p>
+                                                    <ul className="list-disc pl-5">
+                                                        {actualizacion.evidencias.map(e => (
+                                                            <li key={e.id} className="text-xs">
+                                                                <a href={`/storage/${e.ruta_archivo}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                                                                    {e.nombre_archivo}
+                                                                </a>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-600 italic">No hay actualizaciones públicas disponibles.</p>
+                                )}
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

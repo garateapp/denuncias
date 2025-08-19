@@ -145,6 +145,7 @@ class AdminDenunciaController extends Controller
             'comentario' => 'required|string',
             'estado_nuevo' => 'required|string|in:Recibida,En Investigación,Resuelta,Cerrada',
             'evidencias.*' => 'nullable|file|max:10240', // Max 10MB per file
+            'es_publica' => 'boolean',
         ]);
 
         DB::transaction(function () use ($request, $denuncia) {
@@ -154,6 +155,7 @@ class AdminDenunciaController extends Controller
                 'estado_anterior' => $denuncia->estado,
                 'estado_nuevo' => $request->estado_nuevo,
                 'user_id' => Auth::id(),
+                'es_publica' => $request->has('es_publica') ? $request->es_publica : false,
             ]);
 
             $denuncia->update([

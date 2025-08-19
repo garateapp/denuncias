@@ -13,6 +13,7 @@ class ActualizacionDenuncia extends Model
         'estado_anterior',
         'estado_nuevo',
         'user_id',
+        'es_publica',
     ];
 
     /**
