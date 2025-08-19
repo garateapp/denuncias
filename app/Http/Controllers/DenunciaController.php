@@ -168,7 +168,9 @@ class DenunciaController extends Controller
         } else {
           $adminRecipients = [
 
-
+            'francisca.garate@greenex.cl',
+            'nadia.lell@greenex.cl',
+            'ximena.soto@greenex.cl',
             'eduardo.garate@greenex.cl',
             'ivan.romero@greenex.cl',
             'rodrigo.garate@greenex.cl',
