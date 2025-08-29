@@ -14,7 +14,7 @@ class SugerenciaFelicitacionController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'detalle' => 'required|string',
             'tipo' => 'required|string|in:sugerencia,felicitacion',
         ]);

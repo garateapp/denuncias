@@ -165,7 +165,7 @@ export default function Welcome({ auth }) {
                     </h2>
 
                     <div className="mt-6">
-                        <InputLabel htmlFor="nombre" value="Nombre" />
+                        <InputLabel htmlFor="nombre" value="Nombre *" />
                         <TextInput
                             id="nombre"
                             name="nombre"
@@ -180,7 +180,7 @@ export default function Welcome({ auth }) {
                     </div>
 
                     <div className="mt-6">
-                        <InputLabel htmlFor="email" value="Email" />
+                        <InputLabel htmlFor="email" value="Email (Opcional)" />
                         <TextInput
                             id="email"
                             name="email"
@@ -189,13 +189,12 @@ export default function Welcome({ auth }) {
                             className="mt-1 block w-full"
                             autoComplete="username"
                             onChange={(e) => setData('email', e.target.value)}
-                            required
                         />
                         <InputError message={errors.email} className="mt-2" />
                     </div>
 
                     <div className="mt-6">
-                        <InputLabel htmlFor="detalle" value={modalType === 'sugerencia' ? 'Detalle de la Sugerencia' : 'Detalle de la Felicitación'} />
+                        <InputLabel htmlFor="detalle" value={`${modalType === 'sugerencia' ? 'Detalle de la Sugerencia' : 'Detalle de la Felicitación'} *`} />
                         <textarea
                             id="detalle"
                             name="detalle"
