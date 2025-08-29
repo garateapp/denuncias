@@ -62,6 +62,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                         Gestión de Usuarios
                                     </NavLink>
                                 )}
+                                {user.roles && user.roles.includes('super-admin') && (
+                                    <NavLink
+                                        href={route('admin.sugerencias_felicitaciones.index')}
+                                        active={route().current('admin.sugerencias_felicitaciones.index')}
+                                    >
+                                        Sugerencias y Felicitaciones
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 

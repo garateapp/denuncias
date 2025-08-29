@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DenunciaController;
 use App\Http\Controllers\SeguimientoController;
+use App\Http\Controllers\SugerenciaFelicitacionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +24,8 @@ Route::post('/denuncias', [DenunciaController::class, 'store'])->name('denuncias
 Route::get('/seguimiento', [SeguimientoController::class, 'index'])->name('seguimiento.index');
 Route::get('/denuncias/{codigo}', [SeguimientoController::class, 'show'])->name('seguimiento.show');
 Route::post('/seguimiento/{codigo}', [SeguimientoController::class, 'addPublicUpdate'])->name('seguimiento.addPublicUpdate');
+Route::post('sugerencias-felicitaciones', [SugerenciaFelicitacionController::class, 'store'])->name('sugerencias.felicitaciones.store');
+
 
 require __DIR__.'/auth.php';
 
@@ -58,5 +61,7 @@ Route::middleware(['auth', 'verified', 'role:admin|super-admin|Comisionado|Geren
     Route::get('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
     Route::post('/admin/users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
     Route::put('/admin/users/{user}/roles', [App\Http\Controllers\Admin\UserController::class, 'updateRole'])->name('admin.users.updateRole');
-});
 
+    // Ruta para ver sugerencias y felicitaciones
+    Route::get('/admin/sugerencias-felicitaciones', [App\Http\Controllers\Admin\AdminSugerenciaFelicitacionController::class, 'index'])->name('admin.sugerencias_felicitaciones.index');
+});
