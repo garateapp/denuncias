@@ -148,7 +148,7 @@ export default function Welcome({ auth }) {
                             </div>
                         </div>
 
-                        <div className="mt-12 text-left">
+                        {/* <div className="mt-12 text-left">
                             <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
                                 <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center md:text-left">
                                     Declaración de Conflictos de Interés
@@ -163,7 +163,7 @@ export default function Welcome({ auth }) {
                                     </PrimaryButton>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </main>
 
