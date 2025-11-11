@@ -147,6 +147,23 @@ export default function Welcome({ auth }) {
                                 </PrimaryButton>
                             </div>
                         </div>
+
+                        <div className="mt-12 text-left">
+                            <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
+                                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center md:text-left">
+                                    Declaración de Conflictos de Interés
+                                </h2>
+                                <p className="text-gray-600 mb-6 text-center md:text-left">
+                                    Ingresa  para completar el formulario oficial, registrar tus datos personales
+                                    y declarar eventuales situaciones que puedan afectar la independencia o imparcialidad en tus funciones.
+                                </p>
+                                <div className="flex justify-center md:justify-start">
+                                    <PrimaryButton onClick={() => (window.location.href = route('conflictos.create'))}>
+                                        Abrir formulario
+                                    </PrimaryButton>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </main>
 

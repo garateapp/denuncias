@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DenunciaController;
 use App\Http\Controllers\SeguimientoController;
 use App\Http\Controllers\SugerenciaFelicitacionController;
+use App\Http\Controllers\ConflictInterestDeclarationController;
+use App\Http\Controllers\AdminConflictInterestDeclarationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,6 +27,8 @@ Route::get('/seguimiento', [SeguimientoController::class, 'index'])->name('segui
 Route::get('/denuncias/{codigo}', [SeguimientoController::class, 'show'])->name('seguimiento.show');
 Route::post('/seguimiento/{codigo}', [SeguimientoController::class, 'addPublicUpdate'])->name('seguimiento.addPublicUpdate');
 Route::post('sugerencias-felicitaciones', [SugerenciaFelicitacionController::class, 'store'])->name('sugerencias.felicitaciones.store');
+Route::get('/conflictos-interes/declaracion', [ConflictInterestDeclarationController::class, 'create'])->name('conflictos.create');
+Route::post('/conflictos-interes/declaracion', [ConflictInterestDeclarationController::class, 'store'])->name('conflictos.store');
 
 
 require __DIR__.'/auth.php';
@@ -64,4 +68,10 @@ Route::middleware(['auth', 'verified', 'role:admin|super-admin|Comisionado|Geren
 
     // Ruta para ver sugerencias y felicitaciones
     Route::get('/admin/sugerencias-felicitaciones', [App\Http\Controllers\Admin\AdminSugerenciaFelicitacionController::class, 'index'])->name('admin.sugerencias_felicitaciones.index');
+
+    // Rutas para gestionar y revisar declaraciones de conflictos de interés
+    Route::get('/admin/conflictos-interes', [AdminConflictInterestDeclarationController::class, 'index'])->name('admin.conflictos.index');
+    Route::get('/admin/conflictos-interes/{declaration}', [AdminConflictInterestDeclarationController::class, 'show'])->name('admin.conflictos.show');
+    Route::patch('/admin/conflictos-interes/{declaration}', [AdminConflictInterestDeclarationController::class, 'review'])->name('admin.conflictos.review');
+    Route::get('/admin/conflictos-interes/{declaration}/firma', [AdminConflictInterestDeclarationController::class, 'signature'])->name('admin.conflictos.signature');
 });

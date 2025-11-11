@@ -38,6 +38,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                         Denuncias Generadas
                                     </NavLink>
                                 )}
+                                {user.roles && (user.roles.includes('super-admin') || user.roles.includes('Administrador') || user.roles.includes('Comisionado')) && (
+                                    <NavLink
+                                        href={route('admin.conflictos.index')}
+                                        active={route().current('admin.conflictos.index') || route().current('admin.conflictos.show')}
+                                    >
+                                        Conflictos de Interés
+                                    </NavLink>
+                                )}
                                 {user.roles && user.roles.includes('super-admin') && (
                                     <NavLink
                                         href={route('admin.roles.index')}
