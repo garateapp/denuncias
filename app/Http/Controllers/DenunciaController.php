@@ -174,6 +174,7 @@ class DenunciaController extends Controller
             'eduardo.garate@greenex.cl',
             'ivan.romero@greenex.cl',
             'rodrigo.garate@greenex.cl',
+            'cristian.salinas@planaris.cl',
         ];
         }
 
