@@ -49,6 +49,7 @@ class DenunciaController extends Controller
         $initialEsAnonima = true;
         $leyKarinTypeIds = [1, 2, 3];
         $delitosYEticaTypeIds = [4, 5, 6];
+        $empresa = $request->input('empresa', 'novafresh');
 
         if ($request->has('category')) {
             $category = $request->input('category');
@@ -66,6 +67,7 @@ class DenunciaController extends Controller
             'initialEsAnonima' => $initialEsAnonima,
             'leyKarinTypeIds' => $leyKarinTypeIds,
             'delitosYEticaTypeIds' => $delitosYEticaTypeIds,
+            'empresa' => $empresa,
         ]);
     }
 
@@ -99,6 +101,8 @@ class DenunciaController extends Controller
             'apellidos_denunciado' => 'nullable|string|max:255',
             'area_denunciado' => 'nullable|string|max:255',
             'cargo_denunciado' => 'nullable|string|max:255',
+
+            'empresa' => 'required|string|in:novafresh,agricola',
 
             'evidencias.*' => 'nullable|file|max:10240', // Max 10MB per file
         ];
@@ -159,22 +163,28 @@ class DenunciaController extends Controller
 
         // Enviar correo electrónico a los administradores
         if(env('APP_ENV') === 'local') {
-
-
-        $adminRecipients = [
-
-            'carlos.alvarez@greenex.cl',
-        ];
+            $adminRecipients = [
+                'carlos.alvarez@greenex.cl',
+            ];
         } else {
-          $adminRecipients = [
-
-            'francisca.garate@greenex.cl',
-            'nadia.lell@greenex.cl',
-            'elizabeth.elizondo@greenex.cl',
-            'eduardo.garate@greenex.cl',
-            'iromero@greenex.cl',
-            'rodrigo.garate@greenex.cl',
-        ];
+            if ($denuncia->empresa === 'agricola') {
+                $adminRecipients = [
+                    'francisca.garate@novafresh.cl',
+                    'nadia.lell@novafresh.cl',
+                    'elizabeth.elizondo@novafresh.cl',
+                    'eduardo.garate@novafresh.cl',
+                    'iromero@novafresh.cl',
+                    'rodrigo.garate@novafresh.cl',
+                ];
+            } else {
+                $adminRecipients = [
+                    'francisca.garate@novafresh.cl',
+                    'nadia.lell@novafresh.cl',
+                    'elizabeth.elizondo@novafresh.cl',
+                    'eduardo.garate@novafresh.cl',
+                    'rodrigo.garate@novafresh.cl',
+                ];
+            }
         }
 
         Mail::to($adminRecipients)->send(new DenunciaReceived($denuncia));
@@ -188,6 +198,7 @@ class DenunciaController extends Controller
 
         return Inertia::render('Denuncias/Success', [
             'codigoSeguimiento' => $codigoSeguimiento,
+            'empresa' => $denuncia->empresa,
         ]);
     }
 }
