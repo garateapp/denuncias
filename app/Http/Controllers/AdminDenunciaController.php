@@ -30,7 +30,13 @@ class AdminDenunciaController extends Controller
             // No filter, they can see all complaints
         }
 
+        // Filter by empresa
+        if ($request->has('empresa') && in_array($request->empresa, ['novafresh', 'agricola'])) {
+            $query->where('empresa', $request->empresa);
+        }
+
         $currentView = $request->get('view', 'list');
+        $currentEmpresa = $request->get('empresa', '');
 
         if ($currentView === 'kanban') {
             $denuncias = $query->get();
@@ -41,6 +47,7 @@ class AdminDenunciaController extends Controller
         return Inertia::render('Admin/Denuncias/Index', [
             'denuncias' => $denuncias,
             'currentView' => $currentView,
+            'currentEmpresa' => $currentEmpresa,
         ]);
     }
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import KanbanBoard from '@/Components/KanbanBoard';
 import { Inertia } from '@inertiajs/inertia';
 
-export default function DenunciaIndex({ auth, denuncias, currentView }) {
+export default function DenunciaIndex({ auth, denuncias, currentView, currentEmpresa = '' }) {
     const [viewMode, setViewMode] = useState(currentView);
 
     useEffect(() => {
@@ -47,6 +47,28 @@ export default function DenunciaIndex({ auth, denuncias, currentView }) {
                                 </div>
                             </div>
 
+                            {/* Filter by empresa */}
+                            <div className="flex space-x-2 mb-4">
+                                <button
+                                    onClick={() => Inertia.visit(route('admin.denuncias.index', { view: viewMode, empresa: '' }), { preserveScroll: true })}
+                                    className={`px-3 py-1 rounded-md text-xs font-medium ${currentEmpresa === '' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                >
+                                    Todas
+                                </button>
+                                <button
+                                    onClick={() => Inertia.visit(route('admin.denuncias.index', { view: viewMode, empresa: 'novafresh' }), { preserveScroll: true })}
+                                    className={`px-3 py-1 rounded-md text-xs font-medium ${currentEmpresa === 'novafresh' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                >
+                                    Novafresh
+                                </button>
+                                <button
+                                    onClick={() => Inertia.visit(route('admin.denuncias.index', { view: viewMode, empresa: 'agricola' }), { preserveScroll: true })}
+                                    className={`px-3 py-1 rounded-md text-xs font-medium ${currentEmpresa === 'agricola' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                >
+                                    Agrícola Greenex
+                                </button>
+                            </div>
+
                             {viewMode === 'list' ? (
                                 <>
                                     <div className="overflow-x-auto">
@@ -54,6 +76,7 @@ export default function DenunciaIndex({ auth, denuncias, currentView }) {
                                             <thead className="bg-gray-50">
                                                 <tr>
                                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código de Seguimiento</th>
+                                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</th>
                                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría y Tipos</th>
                                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalle</th>
                                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
@@ -65,6 +88,11 @@ export default function DenunciaIndex({ auth, denuncias, currentView }) {
                                                 {denuncias.data.map((denuncia) => (
                                                     <tr key={denuncia.id}>
                                                         <td className="px-6 py-4 whitespace-nowrap">{denuncia.codigo_seguimiento}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${denuncia.empresa === 'agricola' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                                                                {denuncia.empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}
+                                                            </span>
+                                                        </td>
                                                         <td className="px-6 py-4">
                                                             <div className="mb-1">
                                                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
