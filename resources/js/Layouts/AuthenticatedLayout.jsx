@@ -19,7 +19,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <img src="/img/logo.webp" alt="Greenex Logo" className="block h-9 w-auto" />
+                                    <img src="/img/logo-novafresh.png" alt="Novafresh Logo" className="block h-9 w-auto" />
                                 </Link>
                             </div>
 

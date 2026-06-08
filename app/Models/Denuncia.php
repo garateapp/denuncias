@@ -14,6 +14,7 @@ class Denuncia extends Model
         'descripcion',
         'implicados',
         'medidas_proteccion_solicitadas',
+        'empresa',
         'es_anonima',
         'estado',
         'nombre_denunciante',

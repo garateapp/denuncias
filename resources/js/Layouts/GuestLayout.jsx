@@ -6,7 +6,7 @@ export default function GuestLayout({ children }) {
         <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
             <div>
                 <Link href="/">
-                    <img src="/img/logo.webp" alt="Greenex Logo" className="h-20" />
+                    <img src="/img/logo-novafresh.png" alt="Novafresh Logo" className="h-20" />
                 </Link>
             </div>
 
