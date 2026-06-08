@@ -60,7 +60,7 @@ export default function Welcome({ auth }) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                         <div className="flex-shrink-0">
                             <Link href="/">
-                                <img src="/img/logo.webp" alt="Greenex Logo" className="h-12 w-auto" />
+                                <img src="/img/logo-novafresh.png" alt="Novafresh" className="h-12 w-auto" />
                             </Link>
                         </div>
                         <nav className="-mx-3 flex flex-1 justify-end items-center">
@@ -204,7 +204,7 @@ export default function Welcome({ auth }) {
                     <p className="mb-4">
                         Garantizamos la absoluta confidencialidad de la información y la protección total del denunciante contra cualquier tipo de represalia.
                     </p>
-                    &copy; {new Date().getFullYear()} Greenex. Todos los derechos reservados.
+                    &copy; {new Date().getFullYear()} Novafresh. Todos los derechos reservados.
                 </footer>
             </div>
 
