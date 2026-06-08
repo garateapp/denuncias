@@ -35,6 +35,7 @@ export default function Show({ denuncia }) {
                         <div className="mb-6">
                             <p><span className="font-semibold">Código de Seguimiento:</span> {denuncia.codigo_seguimiento}</p>
                             <p><span className="font-semibold">Estado:</span> {denuncia.estado}</p>
+                            <p><span className="font-semibold">Empresa:</span> {denuncia.empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}</p>
                         </div>
 
                         <form onSubmit={submit} className="space-y-4">

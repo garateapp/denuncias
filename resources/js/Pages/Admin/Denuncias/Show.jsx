@@ -150,6 +150,13 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin, tiposD
                                 </div>
 
                                 <div className="mb-4">
+                                    <p className="text-sm font-medium text-gray-600">Empresa:</p>
+                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${denuncia.empresa === 'agricola' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                                        {denuncia.empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}
+                                    </span>
+                                </div>
+
+                                <div className="mb-4">
                                     <p className="text-sm font-medium text-gray-600">Categoría de Denuncia:</p>
                                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                         {denuncia.categoria_denuncia}
