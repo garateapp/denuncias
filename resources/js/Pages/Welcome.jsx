@@ -98,28 +98,61 @@ export default function Welcome({ auth }) {
                             Un espacio seguro y confidencial para mejorar nuestro ambiente de trabajo.
                         </p>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                            <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
-                                <div>
-                                    <h2 className="text-2xl font-bold text-gray-800 mb-3">Acoso o Violencia Laboral</h2>
-                                    <p className="text-gray-600 mb-6">
-                                        Reporta situaciones de acoso sexual, acoso laboral o violencia en el trabajo, conforme a la Ley Karin.
-                                    </p>
+                        {/* Novafresh section */}
+                        <div className="mb-12">
+                            <h2 className="text-2xl font-bold text-gray-800 border-b border-gray-200 pb-2 mb-6 text-left">Novafresh</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Acoso o Violencia Laboral</h2>
+                                        <p className="text-gray-600 mb-6">
+                                            Reporta situaciones de acoso sexual, acoso laboral o violencia en el trabajo, conforme a la Ley Karin.
+                                        </p>
+                                    </div>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'leyKarin', empresa: 'novafresh' })}>
+                                        Iniciar Denuncia
+                                    </PrimaryButton>
                                 </div>
-                                <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'leyKarin' })}>
-                                    Iniciar Denuncia
-                                </PrimaryButton>
+                                <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Delitos o Faltas a la Ética</h2>
+                                        <p className="text-gray-600 mb-6">
+                                            Informa sobre robos, fraudes, sobornos, o cualquier otra conducta contraria a nuestro código de ética.
+                                        </p>
+                                    </div>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'delitosYEtica', empresa: 'novafresh' })}>
+                                        Iniciar Denuncia
+                                    </PrimaryButton>
+                                </div>
                             </div>
-                            <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
-                                <div>
-                                    <h2 className="text-2xl font-bold text-gray-800 mb-3">Delitos o Faltas a la Ética</h2>
-                                    <p className="text-gray-600 mb-6">
-                                        Informa sobre robos, fraudes, sobornos, o cualquier otra conducta contraria a nuestro código de ética.
-                                    </p>
+                        </div>
+
+                        {/* Agrícola Greenex section */}
+                        <div className="mb-12">
+                            <h2 className="text-2xl font-bold text-green-800 border-b border-green-200 pb-2 mb-6 text-left">Agrícola Greenex</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="bg-green-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Acoso o Violencia Laboral</h2>
+                                        <p className="text-gray-600 mb-6">
+                                            Reporta situaciones de acoso sexual, acoso laboral o violencia en el trabajo, conforme a la Ley Karin.
+                                        </p>
+                                    </div>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'leyKarin', empresa: 'agricola' })} className="bg-green-600 hover:bg-green-700">
+                                        Iniciar Denuncia
+                                    </PrimaryButton>
                                 </div>
-                                <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'delitosYEtica' })}>
-                                    Iniciar Denuncia
-                                </PrimaryButton>
+                                <div className="bg-green-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Delitos o Faltas a la Ética</h2>
+                                        <p className="text-gray-600 mb-6">
+                                            Informa sobre robos, fraudes, sobornos, o cualquier otra conducta contraria a nuestro código de ética.
+                                        </p>
+                                    </div>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'delitosYEtica', empresa: 'agricola' })} className="bg-green-600 hover:bg-green-700">
+                                        Iniciar Denuncia
+                                    </PrimaryButton>
+                                </div>
                             </div>
                         </div>
 
