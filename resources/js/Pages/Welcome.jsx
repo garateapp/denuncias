@@ -154,7 +154,7 @@ export default function Welcome({ auth }) {
                                     </PrimaryButton>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="bg-blue-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
@@ -179,7 +179,7 @@ export default function Welcome({ auth }) {
                                     Enviar Felicitación
                                 </PrimaryButton>
                             </div>
-                        </div> */}
+                        </div>
 
                         {/* <div className="mt-12 text-left">
                             <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
