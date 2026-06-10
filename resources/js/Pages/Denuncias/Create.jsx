@@ -87,6 +87,11 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                             <p className="text-sm">
                                 Usted está realizando una denuncia bajo la categoría de: {selectedCategory === 'leyKarin' ? 'Ley Karin' : 'Delitos y Faltas a la Ética'}.
                             </p>
+                            {selectedCategory !== 'leyKarin' && (
+                                <p className="text-sm mt-2">
+                                    Reporta, de manera anónima, confidencial y sin temor a represalias, posibles vulneraciones de derechos laborales y humanos, discriminación, trabajo forzoso o infantil, incumplimientos en remuneraciones o jornadas, riesgos para la salud y seguridad, represalias, fraude, soborno, robo o cualquier otra conducta contraria a nuestro Código de Ética
+                                    </p>
+                            )}
                              <p className="text-sm mt-2">
                                 El equipo de cumplimiento revisará y clasificará su denuncia.
                             </p>
