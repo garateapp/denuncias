@@ -115,7 +115,7 @@ export default function Welcome({ auth }) {
                                 </div>
                                 <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
                                     <div>
-                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Delitos o Faltas a la Ética</h2>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Delitos o Faltas a la Ética y Derechos Humanos</h2>
                                         <p className="text-gray-600 mb-6">
                                             Informa sobre robos, fraudes, sobornos, o cualquier otra conducta contraria a nuestro código de ética.
                                         </p>
@@ -128,7 +128,7 @@ export default function Welcome({ auth }) {
                         </div>
 
                         {/* Agrícola Greenex section */}
-                        <div className="mb-12">
+                        {/* <div className="mb-12">
                             <h2 className="text-2xl font-bold text-green-800 border-b border-green-200 pb-2 mb-6 text-left">Agrícola Greenex</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="bg-green-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
@@ -179,7 +179,7 @@ export default function Welcome({ auth }) {
                                     Enviar Felicitación
                                 </PrimaryButton>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* <div className="mt-12 text-left">
                             <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
