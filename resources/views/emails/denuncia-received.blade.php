@@ -5,7 +5,7 @@
 
 <p>Se ha recibido una nueva denuncia con el siguiente código de seguimiento: <strong>{{ $denuncia->codigo_seguimiento }}</strong></p>
 
-<p><strong>Empresa:</strong> {{ $denuncia->empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh' }}</p>
+<p><strong>Empresa:</strong> {{ $denuncia->empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos' }}</p>
 
 <h2>Detalles de la Denuncia:</h2>
 

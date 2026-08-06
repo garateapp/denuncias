@@ -56,10 +56,10 @@ export default function DenunciaIndex({ auth, denuncias, currentView, currentEmp
                                     Todas
                                 </button>
                                 <button
-                                    onClick={() => Inertia.visit(route('admin.denuncias.index', { view: viewMode, empresa: 'novafresh' }), { preserveScroll: true })}
-                                    className={`px-3 py-1 rounded-md text-xs font-medium ${currentEmpresa === 'novafresh' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                    onClick={() => Inertia.visit(route('admin.denuncias.index', { view: viewMode, empresa: 'Gárate Hermanos' }), { preserveScroll: true })}
+                                    className={`px-3 py-1 rounded-md text-xs font-medium ${currentEmpresa === 'Gárate Hermanos' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                                 >
-                                    Novafresh
+                                    Gárate Hermanos
                                 </button>
                                 <button
                                     onClick={() => Inertia.visit(route('admin.denuncias.index', { view: viewMode, empresa: 'agricola' }), { preserveScroll: true })}
@@ -90,7 +90,7 @@ export default function DenunciaIndex({ auth, denuncias, currentView, currentEmp
                                                         <td className="px-6 py-4 whitespace-nowrap">{denuncia.codigo_seguimiento}</td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${denuncia.empresa === 'agricola' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                                                                {denuncia.empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}
+                                                                {denuncia.empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos'}
                                                             </span>
                                                         </td>
                                                         <td className="px-6 py-4">

@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKarinTypeIds = [], delitosYEticaTypeIds = [], empresa = 'novafresh' }) {
+export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKarinTypeIds = [], delitosYEticaTypeIds = [], empresa = 'Gárate Hermanos' }) {
 
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -102,8 +102,8 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                 {/* Empresa banner */}
                 <div className="mt-4">
                     <div className={`p-4 border-l-4 ${empresa === 'agricola' ? 'bg-green-50 border-green-400 text-green-800' : 'bg-gray-100 border-gray-400 text-gray-800'}`}>
-                        <p className="font-bold">Empresa: {empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}</p>
-                        <p className="text-sm">Esta denuncia será gestionada por el equipo de {empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}.</p>
+                        <p className="font-bold">Empresa: {empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos'}</p>
+                        <p className="text-sm">Esta denuncia será gestionada por el equipo de {empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos'}.</p>
                     </div>
                 </div>
 

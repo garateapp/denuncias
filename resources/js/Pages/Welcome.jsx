@@ -98,9 +98,9 @@ export default function Welcome({ auth }) {
                             Un espacio seguro y confidencial para mejorar nuestro ambiente de trabajo.
                         </p>
 
-                        {/* Novafresh section */}
+                        {/* Gárate Hermanos section */}
                         <div className="mb-12">
-                            <h2 className="text-2xl font-bold text-gray-800 border-b border-gray-200 pb-2 mb-6 text-left">Novafresh</h2>
+                            <h2 className="text-2xl font-bold text-gray-800 border-b border-gray-200 pb-2 mb-6 text-left">Gárate Hermanos</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
                                     <div>
@@ -109,7 +109,7 @@ export default function Welcome({ auth }) {
                                             Reporta situaciones de acoso sexual, acoso laboral o violencia en el trabajo, conforme a la Ley Karin.
                                         </p>
                                     </div>
-                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'leyKarin', empresa: 'novafresh' })}>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'leyKarin', empresa: 'Gárate Hermanos' })}>
                                         Iniciar Denuncia
                                     </PrimaryButton>
                                 </div>
@@ -120,7 +120,7 @@ export default function Welcome({ auth }) {
                                             Informa sobre robos, fraudes, sobornos, o cualquier otra conducta contraria a nuestro código de ética.
                                         </p>
                                     </div>
-                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'delitosYEtica', empresa: 'novafresh' })}>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'delitosYEtica', empresa: 'Gárate Hermanos' })}>
                                         Iniciar Denuncia
                                     </PrimaryButton>
                                 </div>
@@ -204,7 +204,7 @@ export default function Welcome({ auth }) {
                     <p className="mb-4">
                         Garantizamos la absoluta confidencialidad de la información y la protección total del denunciante contra cualquier tipo de represalia.
                     </p>
-                    &copy; {new Date().getFullYear()} Novafresh. Todos los derechos reservados.
+                    &copy; {new Date().getFullYear()} Gárate Hermanos. Todos los derechos reservados.
                 </footer>
             </div>
 
