@@ -19,7 +19,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <img src="/img/logo-novafresh.png" alt="Novafresh" className="h-24" />
+                                    <img src="/img/logo_garate.png" alt="Gárate Hermanos" className="h-24" />
                                 </Link>
                             </div>
 
