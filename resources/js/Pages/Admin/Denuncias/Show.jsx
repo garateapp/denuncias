@@ -152,7 +152,7 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin, tiposD
                                 <div className="mb-4">
                                     <p className="text-sm font-medium text-gray-600">Empresa:</p>
                                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${denuncia.empresa === 'agricola' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                                        {denuncia.empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}
+                                        {denuncia.empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos'}
                                     </span>
                                 </div>
 
@@ -369,7 +369,7 @@ export default function Show({ auth, denuncia, investigators, isLeyKarin, tiposD
                                                 <InputError message={errors.evidencias} className="mt-2" />
                                             </div>
                                             <PrimaryButton disabled={processing}>Añadir Actualización</PrimaryButton>
-                                            
+
                                             <div className="mt-6">
                                                 <h4 className="text-lg font-bold text-gray-900 mb-2">Tipificación de la Denuncia</h4>
                                                 <InputLabel value="Tipos de Denuncia" />

@@ -31,7 +31,7 @@ class AdminDenunciaController extends Controller
         }
 
         // Filter by empresa
-        if ($request->has('empresa') && in_array($request->empresa, ['novafresh', 'agricola'])) {
+        if ($request->has('empresa') && in_array($request->empresa, ['garate', 'agricola'])) {
             $query->where('empresa', $request->empresa);
         }
 

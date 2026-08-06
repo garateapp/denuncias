@@ -1,7 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link } from '@inertiajs/react';
 
-export default function Success({ codigoSeguimiento, empresa = 'novafresh' }) {
+export default function Success({ codigoSeguimiento, empresa = 'Gárate Hermanos' }) {
     return (
         <GuestLayout>
             <Head title="Denuncia Enviada" />
@@ -16,7 +16,7 @@ export default function Success({ codigoSeguimiento, empresa = 'novafresh' }) {
 
             <div className="mb-4 text-center">
                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${empresa === 'agricola' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                    {empresa === 'agricola' ? 'Agrícola Greenex' : 'Novafresh'}
+                    {empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos'}
                 </span>
             </div>
 

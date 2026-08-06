@@ -49,7 +49,7 @@ class DenunciaController extends Controller
         $initialEsAnonima = true;
         $leyKarinTypeIds = [1, 2, 3];
         $delitosYEticaTypeIds = [4, 5, 6];
-        $empresa = $request->input('empresa', 'novafresh');
+        $empresa = $request->input('empresa', 'Gárate Hermanos');
 
         if ($request->has('category')) {
             $category = $request->input('category');
@@ -102,7 +102,7 @@ class DenunciaController extends Controller
             'area_denunciado' => 'nullable|string|max:255',
             'cargo_denunciado' => 'nullable|string|max:255',
 
-            'empresa' => 'required|string|in:novafresh,agricola',
+            'empresa' => 'required|string|in:Gárate Hermanos,agricola',
 
             'evidencias.*' => 'nullable|file|max:10240', // Max 10MB per file
         ];
@@ -169,20 +169,20 @@ class DenunciaController extends Controller
         } else {
             if ($denuncia->empresa === 'agricola') {
                 $adminRecipients = [
-                    'francisca.garate@novafresh.cl',
-                    'nadia.lell@novafresh.cl',
-                    'elizabeth.elizondo@novafresh.cl',
-                    'eduardo.garate@novafresh.cl',
-                    'iromero@novafresh.cl',
-                    'rodrigo.garate@novafresh.cl',
+                    'francisca.garate@garatehermanos.cl',
+                    'nadia.lell@garatehermanos.cl',
+                    'elizabeth.elizondo@garatehermanos.cl',
+                    'eduardo.garate@garatehermanos.cl',
+                    'iromero@garatehermanos.cl',
+                    'rodrigo.garate@garatehermanos.cl',
                 ];
             } else {
                 $adminRecipients = [
-                    'francisca.garate@novafresh.cl',
-                    'nadia.lell@novafresh.cl',
-                    'elizabeth.elizondo@novafresh.cl',
-                    'eduardo.garate@novafresh.cl',
-                    'rodrigo.garate@novafresh.cl',
+                    'francisca.garate@garatehermanos.cl',
+                    'nadia.lell@garatehermanos.cl',
+                    'elizabeth.elizondo@garatehermanos.cl',
+                    'eduardo.garate@garatehermanos.cl',
+                    'rodrigo.garate@garatehermanos.cl',
                 ];
             }
         }
