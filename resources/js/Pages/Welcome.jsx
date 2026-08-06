@@ -54,13 +54,13 @@ export default function Welcome({ auth }) {
 
     return (
         <>
-            <Head title="Canal de Denuncias Novafresh" />
+            <Head title="Canal de Denuncias Gárate Hermanos" />
             <div className="min-h-screen bg-gray-100 text-gray-900 antialiased">
                 <header className="bg-white shadow-sm py-4">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                         <div className="flex-shrink-0">
                             <Link href="/">
-                                <img src="/img/logo-novafresh.png" alt="Novafresh" className="h-32" />
+                                <img src="/img/logo_garate.png" alt="Gárate Hermanos" className="h-32" />
                             </Link>
                         </div>
                         <nav className="-mx-3 flex flex-1 justify-end items-center">
