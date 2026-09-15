@@ -173,8 +173,7 @@ class DenunciaController extends Controller
                     'nadia.lell@garatehermanos.cl',
                     'elizabeth.elizondo@garatehermanos.cl',
                     'eduardo.garate@garatehermanos.cl',
-                    'iromero@garatehermanos.cl',
-                    'rodrigo.garate@garatehermanos.cl',
+
                 ];
             } else {
                 $adminRecipients = [
@@ -182,7 +181,7 @@ class DenunciaController extends Controller
                     'nadia.lell@garatehermanos.cl',
                     'elizabeth.elizondo@garatehermanos.cl',
                     'eduardo.garate@garatehermanos.cl',
-                    'rodrigo.garate@garatehermanos.cl',
+
                 ];
             }
         }
