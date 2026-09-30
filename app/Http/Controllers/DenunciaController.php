@@ -156,7 +156,7 @@ class DenunciaController extends Controller
             'email_personal_denunciante' => $request->es_anonima ? null : $request->email_personal_denunciante,
             'rut_denunciante' => $request->es_anonima ? null : $request->rut_denunciante,
             'telefono_denunciante' => $request->es_anonima ? null : $request->telefono_denunciante,
-            'assigned_user_id' => 7,
+            'assigned_user_id' => 15,
 
 
         ]));
