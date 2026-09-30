@@ -210,7 +210,8 @@ class DenunciaController extends Controller
             } else {
                 if($denuncia->empresa === 'Gárate Hermanos' && $denuncia->tipos()->whereIn('id', $inocuidadTypeIds)->exists()) {
                     $adminRecipients = [
-                        'viviana.valdebenito@garatehermanos.cl'
+                        'viviana.valdebenito@garatehermanos.cl',
+                        'marcela.naredo@garatehermanos.cl',
                     ];
                 }else{
                 $adminRecipients = [

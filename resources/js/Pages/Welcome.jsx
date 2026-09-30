@@ -166,7 +166,7 @@ export default function Welcome({ auth }) {
                                         <p className="text-gray-600 mb-6">
                                             Reporta, de manera anónima, confidencial y sin temor a represalias, cualquier situación que pueda poner en riesgo la seguridad, calidad, autenticidad o legalidad de la fruta que procesamos y exportamos
                                         </p>
-                                        <p className="text-gray-600 text-left mb-6">
+                                        {/* <p className="text-gray-600 text-left mb-6">
                                             <ol>
                                                 <li>-Fruta caída al suelo, contaminada o rechazada que se vuelve a embalar o se despacha igual.</li>
                                                 <li>-Personas que manipulan fruta sin lavarse las manos, sin la ropa de trabajo o estando enfermas.</li>
@@ -177,7 +177,7 @@ export default function Welcome({ auth }) {
                                                 <li>-Cambios de etiquetas, variedad, origen, productor o certificación que no corresponden.</li>
                                                 <li>-Presión de cualquier persona para ocultar un problema de calidad o inocuidad.</li>
                                             </ol>
-</p>
+</p> */}
                                     </div>
                                     <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'inocuidad', empresa: 'Gárate Hermanos' })} className="bg-green-600 hover:bg-green-700">
                                         Iniciar Denuncia
