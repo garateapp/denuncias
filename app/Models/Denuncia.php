@@ -34,6 +34,12 @@ class Denuncia extends Model
         'fecha_aplicacion_medidas',
         'fecha_derivacion_dt',
         'fecha_notificacion_diat',
+         // --- NUEVOS CAMPOS PARA INOCUIDAD ---
+        'area_ocurrencia',
+        'fecha_aproximada',
+        'turno',
+        'fruta_despachada',
+        'situacion_continua',
     ];
 
     protected $casts = [

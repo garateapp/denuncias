@@ -49,6 +49,7 @@ class DenunciaController extends Controller
         $initialEsAnonima = true;
         $leyKarinTypeIds = [1, 2, 3];
         $delitosYEticaTypeIds = [4, 5, 6];
+        $inocuidadTypeIds = [7]; // IDs for Inocuidad types
         $empresa = $request->input('empresa', 'Gárate Hermanos');
 
         if ($request->has('category')) {
@@ -60,6 +61,10 @@ class DenunciaController extends Controller
                 $initialTiposDenuncia = $delitosYEticaTypeIds;
                 $initialEsAnonima = true;
             }
+            elseif ($category === 'inocuidad') {
+                $initialTiposDenuncia = $inocuidadTypeIds;
+                $initialEsAnonima = true;
+            }
         }
 
         return Inertia::render('Denuncias/Create', [
@@ -67,6 +72,7 @@ class DenunciaController extends Controller
             'initialEsAnonima' => $initialEsAnonima,
             'leyKarinTypeIds' => $leyKarinTypeIds,
             'delitosYEticaTypeIds' => $delitosYEticaTypeIds,
+            'inocuidadTypeIds' => $inocuidadTypeIds,
             'empresa' => $empresa,
         ]);
     }
@@ -105,6 +111,15 @@ class DenunciaController extends Controller
             'empresa' => 'required|string|in:Gárate Hermanos,agricola',
 
             'evidencias.*' => 'nullable|file|max:10240', // Max 10MB per file
+
+            //Campos para Inocuidad
+
+            'area_ocurrencia' => 'nullable|string|max:100',
+            'fecha_aproximada' => 'nullable|date',
+            'turno' => 'nullable|string|max:50',
+            'fruta_despachada' => 'nullable|string|max:100',
+            'situacion_continua' => 'nullable|string',
+
         ];
 
         $selectedTipos = $request->input('tipos_denuncia', []);
@@ -131,7 +146,8 @@ class DenunciaController extends Controller
         $emailOpcionalConfirmacion = $request->input('email_opcional_confirmacion');
         unset($validatedData['email_opcional_confirmacion']);
 
-        $denuncia = Denuncia::create(array_merge($validatedData, [
+             if($request->input('tipos_denuncia')[0]==7){
+            $denuncia = Denuncia::create(array_merge($validatedData, [
             'codigo_seguimiento' => $codigoSeguimiento,
             'estado' => 'Recibida',
             'nombre_denunciante' => $request->es_anonima ? null : $request->nombre_denunciante,
@@ -140,11 +156,27 @@ class DenunciaController extends Controller
             'email_personal_denunciante' => $request->es_anonima ? null : $request->email_personal_denunciante,
             'rut_denunciante' => $request->es_anonima ? null : $request->rut_denunciante,
             'telefono_denunciante' => $request->es_anonima ? null : $request->telefono_denunciante,
-        ]));
+            'assigned_user_id' => 7,
 
+
+        ]));
+             }
+             else{
+                $denuncia = Denuncia::create(array_merge($validatedData, [
+                    'codigo_seguimiento' => $codigoSeguimiento,
+            'estado' => 'Recibida',
+            'nombre_denunciante' => $request->es_anonima ? null : $request->nombre_denunciante,
+            'apellidos_denunciante' => $request->es_anonima ? null : $request->apellidos_denunciante,
+            'genero_denunciante' => $request->es_anonima ? null : $request->genero_denunciante,
+            'email_personal_denunciante' => $request->es_anonima ? null : $request->email_personal_denunciante,
+            'rut_denunciante' => $request->es_anonima ? null : $request->rut_denunciante,
+            'telefono_denunciante' => $request->es_anonima ? null : $request->telefono_denunciante,
+         ]));
+             }
         if ($request->has('tipos_denuncia')) {
             $denuncia->tipos()->attach($request->input('tipos_denuncia'));
         }
+
 
         if ($request->hasFile('evidencias')) {
             foreach ($request->file('evidencias') as $file) {
@@ -164,7 +196,7 @@ class DenunciaController extends Controller
         // Enviar correo electrónico a los administradores
         if(env('APP_ENV') === 'local') {
             $adminRecipients = [
-                'carlos.alvarez@greenex.cl',
+                'carlos.alvarez@garatehermanos.cl',
             ];
         } else {
             if ($denuncia->empresa === 'agricola') {
@@ -176,6 +208,11 @@ class DenunciaController extends Controller
 
                 ];
             } else {
+                if($denuncia->empresa === 'Gárate Hermanos' && $denuncia->tipos()->whereIn('id', $inocuidadTypeIds)->exists()) {
+                    $adminRecipients = [
+                        'viviana.valdebenito@garatehermanos.cl'
+                    ];
+                }else{
                 $adminRecipients = [
                     'francisca.garate@garatehermanos.cl',
                     'nadia.lell@garatehermanos.cl',
@@ -183,6 +220,7 @@ class DenunciaController extends Controller
                     'eduardo.garate@garatehermanos.cl',
 
                 ];
+                }
             }
         }
 

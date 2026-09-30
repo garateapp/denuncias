@@ -28,6 +28,13 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
         tipos_denuncia: initialTiposDenuncia,
         email_opcional_confirmacion: '',
         empresa: empresa,
+
+        // --- NUEVOS CAMPOS PARA INOCUIDAD ---
+        area_ocurrencia: '',
+        fecha_aproximada: '',
+        turno: '',
+        fruta_despachada: '',
+        situacion_continua: '',
     });
 
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -45,7 +52,8 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
             setSelectedCategory('delitosYEtica');
             setData('es_anonima', initialEsAnonima);
         } else {
-            setSelectedCategory(null);
+            // CAMBIO AQUÍ: Asignamos 'inocuidad' en lugar de null
+            setSelectedCategory('inocuidad');
             setData('es_anonima', initialEsAnonima);
         }
     }, [initialTiposDenuncia, leyKarinTypeIds, delitosYEticaTypeIds, initialEsAnonima]);
@@ -67,6 +75,8 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
             return "Denuncia Ley Karin";
         } else if (selectedCategory === 'delitosYEtica') {
             return "Denuncia de Delitos y Faltas a la Ética";
+        } else if (selectedCategory === 'inocuidad') {
+            return "Denuncia de Inocuidad, Calidad y Legalidad";
         }
         return "Realizar Denuncia";
     };
@@ -85,7 +95,7 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                         <div className="p-4 bg-gray-100 border-l-4 border-gray-400 text-gray-800">
                             <p className="font-bold">Categoría de la denuncia</p>
                             <p className="text-sm">
-                                Usted está realizando una denuncia bajo la categoría de: {selectedCategory === 'leyKarin' ? 'Ley Karin' : 'Delitos y Faltas a la Ética'}.
+                                Usted está realizando una denuncia bajo la categoría de: {selectedCategory === 'leyKarin' ? 'Ley Karin' : selectedCategory==='delitosYEtica' ? 'Delitos y Faltas a la Ética' : 'Inocuidad, Calidad y Legalidad'}.
                             </p>
                             {selectedCategory !== 'leyKarin' && (
                                 <p className="text-sm mt-2">
@@ -104,6 +114,11 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                     <div className={`p-4 border-l-4 ${empresa === 'agricola' ? 'bg-green-50 border-green-400 text-green-800' : 'bg-gray-100 border-gray-400 text-gray-800'}`}>
                         <p className="font-bold">Empresa: {empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos'}</p>
                         <p className="text-sm">Esta denuncia será gestionada por el equipo de {empresa === 'agricola' ? 'Agrícola Greenex' : 'Gárate Hermanos'}.</p>
+                        {selectedCategory === 'inocuidad' && (
+                            <p className="text-sm mt-2">
+                                Su denuncia será revisada por el área de Aseguramiento de Calidad y la Gerencia, sin revelar su identidad.
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -119,7 +134,108 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                     ></textarea>
                     <InputError message={errors.descripcion} className="mt-2" />
                 </div>
+                {/* --- BLOQUE ESPECÍFICO PARA INOCUIDAD --- */}
+                {selectedCategory === 'inocuidad' && (
+                    <>
+                        <h3 className="text-lg font-medium text-gray-900 mt-6 mb-4">
+                            Detalles del Incidente de Inocuidad
+                        </h3>
 
+                        <div className="mt-4">
+                            <InputLabel htmlFor="area_ocurrencia" value="Área o línea donde ocurrió" />
+                            <select
+                                id="area_ocurrencia"
+                                name="area_ocurrencia"
+                                value={data.area_ocurrencia}
+                                className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                onChange={(e) => setData('area_ocurrencia', e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccione un área</option>
+                                <option value="linea1carozos">Línea 1 Carozos</option>
+                                <option value="linea2carozos">Línea 2 Carozos</option>
+                                <option value="linea1cherries">Línea 1 Cherries</option>
+                                <option value="linea2cherries">Línea 2 Cherries</option>
+                                <option value="almacenamiento">Almacenamiento / Frío</option>
+                                <option value="despacho">Despacho</option>
+                                <option value="otra">Otra</option>
+                            </select>
+                            <InputError message={errors.area_ocurrencia} className="mt-2" />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="fecha_aproximada" value="Fecha aproximada del hecho" />
+                            <input
+                                type="date"
+                                id="fecha_aproximada"
+                                name="fecha_aproximada"
+                                value={data.fecha_aproximada}
+                                className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                onChange={(e) => setData('fecha_aproximada', e.target.value)}
+                                required
+                            />
+                            <InputError message={errors.fecha_aproximada} className="mt-2" />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="turno" value="Turno" />
+                            <select
+                                id="turno"
+                                name="turno"
+                                value={data.turno}
+                                className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                onChange={(e) => setData('turno', e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccione un turno</option>
+                                <option value="manana">Mañana</option>
+                                <option value="tarde">Tarde</option>
+                                <option value="noche">Noche</option>
+                                <option value="no_aplica">No aplica / No sé</option>
+                            </select>
+                            <InputError message={errors.turno} className="mt-2" />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="fruta_despachada" value="¿La fruta afectada ya fue despachada?" />
+                            <select
+                                id="fruta_despachada"
+                                name="fruta_despachada"
+                                value={data.fruta_despachada}
+                                className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                onChange={(e) => setData('fruta_despachada', e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccione una opción</option>
+                                <option value="si">Sí</option>
+                                <option value="no">No</option>
+                                <option value="no_se">No sé</option>
+                            </select>
+                            <InputError message={errors.fruta_despachada} className="mt-2" />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="situacion_continua" value="¿La situación sigue ocurriendo?" />
+                            <select
+                                id="situacion_continua"
+                                name="situacion_continua"
+                                value={data.situacion_continua}
+                                className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                onChange={(e) => setData('situacion_continua', e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccione una opción</option>
+                                <option value="si">Sí</option>
+                                <option value="no">No</option>
+                                <option value="no_se">No sé</option>
+                            </select>
+                            <InputError message={errors.situacion_continua} className="mt-2" />
+                        </div>
+                    </>
+                )}
+                {/* --- FIN DEL BLOQUE INOCUIDAD --- */}
+                  {(selectedCategory !== 'inocuidad') && (
+                    <>
                 <div className="mt-4 flex items-center">
                     <input
                         type="checkbox"
@@ -131,7 +247,8 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                     />
                     <InputLabel htmlFor="medidas_proteccion_solicitadas" className="ml-2">Solicitar medidas de protección</InputLabel>
                 </div>
-
+                </>
+                )}
                 {isLeyKarinSelected ? (
                     <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800">
                         <p className="font-bold">Denuncia No Anónima</p>
@@ -245,7 +362,7 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                     </>
                 )}
 
-                {data.es_anonima && (
+                {(data.es_anonima) && (
                     <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-800">
                         <p className="font-bold">¿Desea recibir una copia de la denuncia y el código de seguimiento?</p>
                         <p className="text-sm mb-2">Si lo desea, puede ingresar un correo electrónico. Este correo NO será guardado en nuestros registros y solo se utilizará para enviarle el código de seguimiento.</p>
@@ -262,7 +379,10 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                     </div>
                 )}
 
-                <h3 className="text-lg font-medium text-gray-900 mt-6 mb-4">Datos del Denunciado (opcional)</h3>
+                {(selectedCategory !== 'inocuidad') && (
+                    <>
+                    <h3 className="text-lg font-medium text-gray-900 mt-6 mb-4">Datos del Denunciado (opcional)</h3>
+
                 <div className="mt-4">
                     <InputLabel htmlFor="nombre_denunciado" value="Nombre del Denunciado" />
                     <TextInput
@@ -323,7 +443,8 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                     />
                     <InputError message={errors.implicados} className="mt-2" />
                 </div>
-
+                </>
+                )}
                 <div className="mt-4">
                     <InputLabel htmlFor="evidencias" value="Adjuntar Evidencias (opcional, máx. 10MB por archivo)" />
                     <input
@@ -342,6 +463,7 @@ export default function Create({ initialTiposDenuncia, initialEsAnonima, leyKari
                         Enviar Denuncia
                     </PrimaryButton>
                 </div>
+
             </form>
         </GuestLayout>
     );

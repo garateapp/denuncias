@@ -127,34 +127,8 @@ export default function Welcome({ auth }) {
                             </div>
                         </div>
 
-                        {/* Agrícola Greenex section */}
-                        {/* <div className="mb-12">
-                            <h2 className="text-2xl font-bold text-green-800 border-b border-green-200 pb-2 mb-6 text-left">Agrícola Greenex</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="bg-green-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
-                                    <div>
-                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Acoso o Violencia Laboral</h2>
-                                        <p className="text-gray-600 mb-6">
-                                            Reporta situaciones de acoso sexual, acoso laboral o violencia en el trabajo, conforme a la Ley Karin.
-                                        </p>
-                                    </div>
-                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'leyKarin', empresa: 'agricola' })} className="bg-green-600 hover:bg-green-700">
-                                        Iniciar Denuncia
-                                    </PrimaryButton>
-                                </div>
-                                <div className="bg-green-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
-                                    <div>
-                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Delitos o Faltas a la Ética</h2>
-                                        <p className="text-gray-600 mb-6">
-                                            Informa sobre robos, fraudes, sobornos, o cualquier otra conducta contraria a nuestro código de ética.
-                                        </p>
-                                    </div>
-                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'delitosYEtica', empresa: 'agricola' })} className="bg-green-600 hover:bg-green-700">
-                                        Iniciar Denuncia
-                                    </PrimaryButton>
-                                </div>
-                            </div>
-                        </div> */}
+
+
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="bg-blue-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
@@ -178,6 +152,48 @@ export default function Welcome({ auth }) {
                                 <PrimaryButton onClick={() => openModal('felicitacion')} className="bg-green-600 hover:bg-green-700">
                                     Enviar Felicitación
                                 </PrimaryButton>
+                            </div>
+                        </div>
+
+
+                        <div className="mt-12 text-center">
+
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ml-150">
+                                <div className="bg-green-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Inocuidad, Calidad y Legalidad del Producto</h2>
+                                        <p className="text-gray-600 mb-6">
+                                            Reporta, de manera anónima, confidencial y sin temor a represalias, cualquier situación que pueda poner en riesgo la seguridad, calidad, autenticidad o legalidad de la fruta que procesamos y exportamos
+                                        </p>
+                                        <p className="text-gray-600 text-left mb-6">
+                                            <ol>
+                                                <li>-Fruta caída al suelo, contaminada o rechazada que se vuelve a embalar o se despacha igual.</li>
+                                                <li>-Personas que manipulan fruta sin lavarse las manos, sin la ropa de trabajo o estando enfermas.</li>
+                                                <li>-Vidrio, plástico duro, metal u otros objetos rotos cerca de la línea o de la fruta.</li>
+                                                <li>-Químicos, lubricantes o productos de limpieza mal guardados o mal usados.</li>
+                                                <li>-Plagas (roedores, aves, insectos) en áreas de proceso o almacenaje.</li>
+                                                <li>-Registros o controles que se llenan sin haberse hecho, o que se modifican.</li>
+                                                <li>-Cambios de etiquetas, variedad, origen, productor o certificación que no corresponden.</li>
+                                                <li>-Presión de cualquier persona para ocultar un problema de calidad o inocuidad.</li>
+                                            </ol>
+</p>
+                                    </div>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'inocuidad', empresa: 'Gárate Hermanos' })} className="bg-green-600 hover:bg-green-700">
+                                        Iniciar Denuncia
+                                    </PrimaryButton>
+                                </div>
+                              {/*   <div className="bg-green-50 overflow-hidden shadow-xl sm:rounded-lg p-8 flex flex-col items-center justify-between">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-3">Delitos o Faltas a la Ética</h2>
+                                        <p className="text-gray-600 mb-6">
+                                            Informa sobre robos, fraudes, sobornos, o cualquier otra conducta contraria a nuestro código de ética.
+                                        </p>
+                                    </div>
+                                    <PrimaryButton onClick={() => window.location.href = route('denuncias.create', { category: 'delitosYEtica', empresa: 'Gárate Hermanos' })} className="bg-green-600 hover:bg-green-700">
+                                        Iniciar Denuncia
+                                    </PrimaryButton>
+                                </div>*/}
                             </div>
                         </div>
 

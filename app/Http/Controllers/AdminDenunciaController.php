@@ -24,7 +24,7 @@ class AdminDenunciaController extends Controller
         $user = Auth::user();
         $query = Denuncia::with('tipos', 'assignedUser')->orderBy('created_at', 'desc');
 
-        if ($user->hasRole('investigador') || $user->hasRole('Comisionado')) {
+        if ($user->hasRole('investigador') || $user->hasRole('Comisionado') || $user->hasRole('Comisionado Inocuidad')) {
             $query->where('assigned_user_id', $user->id);
         } else if ($user->hasRole('Administrador') || $user->hasRole('super-admin')) {
             // No filter, they can see all complaints
@@ -34,6 +34,7 @@ class AdminDenunciaController extends Controller
         if ($request->has('empresa') && in_array($request->empresa, ['garate', 'agricola'])) {
             $query->where('empresa', $request->empresa);
         }
+
 
         $currentView = $request->get('view', 'list');
         $currentEmpresa = $request->get('empresa', '');
@@ -58,7 +59,9 @@ class AdminDenunciaController extends Controller
     {
         $denuncia->load('evidencias', 'actualizaciones.user', 'actualizaciones.evidencias', 'assignedUser', 'tipos');
         $investigators = User::whereHas('roles', function ($query) {
-            $query->where('name', 'Comisionado');
+            $query->where('name', 'Comisionado')
+                ->orWhere('name', 'investigador')
+                ->orWhere('name', 'Comisionado Inocuidad');
         })->get();
 
         $isLeyKarin = $denuncia->isLeyKarin();
