@@ -1,5 +1,5 @@
 <p style="text-align: center;">
-    <img src="{{ asset('img/logo.webp') }}" alt="Greenex Logo" style="max-width: 150px; margin-bottom: 20px;">
+    <img src="{{ asset('img/logo_garate.png') }}" alt="Gárate Hermanos Logo" style="max-width: 150px; margin-bottom: 20px;">
 </p>
 <h1>Nueva Denuncia Recibida</h1>
 

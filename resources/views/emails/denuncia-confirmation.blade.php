@@ -1,5 +1,5 @@
 <p style="text-align: center;">
-    <img src="{{ asset('img/logo.webp') }}" alt="Greenex Logo" style="max-width: 150px; margin-bottom: 20px;">
+    <img src="{{ asset('img/logo_garate.png') }}" alt="Gárate Hermanos Logo" style="max-width: 150px; margin-bottom: 20px;">
 </p>
 <h1>Confirmación de Recepción de Denuncia</h1>
 
@@ -13,4 +13,4 @@
 <p>Agradecemos su confianza.</p>
 
 <p>Atentamente,</p>
-<p>El equipo de Greenex</p>
+<p>El equipo de Gárate Hermanos</p>

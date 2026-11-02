@@ -201,10 +201,10 @@ class DenunciaController extends Controller
         } else {
             if ($denuncia->empresa === 'agricola') {
                 $adminRecipients = [
-                    'francisca.garate@garatehermanos.cl',
+                    'francisca@garatehermanos.cl',
                     'nadia.lell@garatehermanos.cl',
-                    'elizabeth.elizondo@garatehermanos.cl',
-                    'eduardo.garate@garatehermanos.cl',
+                    'eduardo@garatehermanos.cl',
+                    'roberto.arenas@garatehermanos.cl'
 
                 ];
             } else {
@@ -215,10 +215,10 @@ class DenunciaController extends Controller
                     ];
                 }else{
                 $adminRecipients = [
-                    'francisca.garate@garatehermanos.cl',
+                    'francisca@garatehermanos.cl',
                     'nadia.lell@garatehermanos.cl',
-                    'elizabeth.elizondo@garatehermanos.cl',
-                    'eduardo.garate@garatehermanos.cl',
+                    'roberto.arenas@garatehermanos.cl'
+                    'eduardo@garatehermanos.cl',
 
                 ];
                 }
